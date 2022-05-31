@@ -16,6 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.1.1] - 2022-05-31
+
+### Fixed
+
+- Fix missing ETC_BASE variable in *tns_functions.sh*
+- Rename config files
+
 ## [0.1.0] - 2022-05-31
 
 ### Added
@@ -29,4 +36,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 [unreleased]: https://github.com/oehrlis/oradba
-[0.1.0]: https://github.com/oehrlis/oradba
+[0.1.0]: https://github.com/oehrlis/oradba/releases/tag/v0.1.0
+[0.1.1]: https://github.com/oehrlis/oradba/releases/tag/v0.1.1
