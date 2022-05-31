@@ -80,6 +80,7 @@ export TVDLDAP_TIMEMOUT=${TVDLDAP_TIMEMOUT:-$TVDLDAP_DEFAULT_TIMEMOUT}
 export TVDLDAP_DRYRUN=${TVDLDAP_DRYRUN:-"FALSE"}
 export TVDLDAP_FORCE=${TVDLDAP_FORCE:-"FALSE"}
 export TVDLDAP_NETALIAS=${TVDLDAP_NETALIAS:-"FALSE"}
+export ETC_BASE=${ETC_BASE:-"TVDLDAP_ETC_DIR"}
 # - EOF Environment Variables -----------------------------------------------
 
 # - Functions ---------------------------------------------------------------
