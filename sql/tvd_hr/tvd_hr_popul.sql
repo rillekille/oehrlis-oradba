@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: tvd_hr_popul.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.10.24
 --  Revision..:  
@@ -12,14 +11,14 @@
 --  Reference.: SYS (or grant manually to a DBA)
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
 --              shown at http://oss.oracle.com/licenses/upl.
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --  Modified..:
 --  see git revision history for more information on changes/updates
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 SET VERIFY OFF
 ALTER SESSION SET NLS_LANGUAGE=American; 
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- insert data into the REGIONS table
 
 Prompt ******  Populating REGIONS table ....
@@ -28,7 +27,7 @@ INSERT INTO regions VALUES ( 2, 'Americas' );
 INSERT INTO regions VALUES ( 3, 'Asia' );
 INSERT INTO regions VALUES ( 4, 'Middle East and Africa' );
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- insert data into the COUNTRIES table
 
 Prompt ******  Populating COUNTIRES table ....
@@ -58,7 +57,7 @@ INSERT INTO countries VALUES ( 'NG', 'Nigeria'                  , 4 );
 INSERT INTO countries VALUES ( 'AR', 'Argentina'                , 2 );
 INSERT INTO countries VALUES ( 'BE', 'Belgium'                  , 1 );
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- insert data into the LOCATIONS table
 
 Prompt ******  Populating LOCATIONS table ....
@@ -86,7 +85,7 @@ INSERT INTO locations VALUES ( 3000 , 'Murtenstrasse 921' , '3095' , 'Bern' , 'B
 INSERT INTO locations VALUES ( 3100 , 'Pieter Breughelstraat 837' , '3029SK' , 'Utrecht' , 'Utrecht' , 'NL');
 INSERT INTO locations VALUES ( 3200 , 'Mariano Escobedo 9991' , '11932' , 'Mexico City' , 'Distrito Federal,' , 'MX');
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- insert data into the DEPARTMENTS table
 
 Prompt ******  Populating DEPARTMENTS table ....
@@ -105,7 +104,7 @@ INSERT INTO departments VALUES ( 61 , 'IT Support'              , NULL, 3000);
 INSERT INTO departments VALUES ( 62 , 'IT Helpdesk'             , NULL, 3000);
 INSERT INTO departments VALUES ( 70 , 'Human Resources'         , 700, 3000);
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- insert data into the JOBS table
 
 Prompt ******  Populating JOBS table ....
@@ -126,7 +125,7 @@ INSERT INTO jobs VALUES ( 'IT_ADM',     'IT Administrator', 4000, 10000);
 INSERT INTO jobs VALUES ( 'HR_MGR',     'Human Resources Manager', 6000, 10000);
 INSERT INTO jobs VALUES ( 'HR_REP',     'Human Resources Representative', 4000, 9000);
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- insert data into the EMPLOYEES table
 
 Prompt ******  Populating EMPLOYEES table ....
@@ -156,4 +155,4 @@ INSERT INTO employees VALUES ( 701, 'Vesper',   'Lynd',         'vesper.lynd@tri
 ALTER TABLE departments ENABLE CONSTRAINT dept_mgr_fk;
 
 COMMIT;
--- EOF ---------------------------------------------------------------------
+-- EOF -------------------------------------------------------------------------

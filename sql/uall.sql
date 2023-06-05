@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: uall.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.12.11
 --  Revision..:  

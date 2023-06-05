@@ -23,6 +23,7 @@ COLUMN audit_condition      FORMAT A50 WRAP HEADING "Policy Condition"
 COLUMN comments             FORMAT A60 WRAP HEADING "Comment"
 COLUMN common               FORMAT A10 WRAP HEADING "Common"
 COLUMN inherited            FORMAT A10 WRAP HEADING "Inherited"
+COLUMN oracle_supplied      FORMAT A10 WRAP HEADING "Oracle"
 COLUMN condition_eval_opt   FORMAT A9 WRAP HEADING "Evaluated"
 COLUMN audit_only_toplevel  FORMAT A9 WRAP HEADING "Top Level"
 

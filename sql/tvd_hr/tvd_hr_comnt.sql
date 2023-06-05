@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: tvd_hr_comnt.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.10.24
 --  Revision..:  
@@ -12,10 +11,10 @@
 --  Reference.: SYS (or grant manually to a DBA)
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
 --              shown at http://oss.oracle.com/licenses/upl.
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --  Modified..:
 --  see git revision history for more information on changes/updates
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 SET FEEDBACK 1
 SET NUMWIDTH 10
 SET LINESIZE 80
@@ -62,7 +61,7 @@ COMMENT ON COLUMN locations.country_id
 IS 'Country where an office, warehouse, or production site of a company is
 located. Foreign key to country_id column of the countries table.';
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 COMMENT ON TABLE departments
 IS 'Departments table that shows details of departments where employees 
 work. Contains 27 rows; references with locations, employees, and job_history tables.';
@@ -81,7 +80,7 @@ IS 'Manager_id of a department. Foreign key to employee_id column of employees t
 COMMENT ON COLUMN departments.location_id
 IS 'Location id where a department is located. Foreign key to location_id column of locations table.';
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 COMMENT ON TABLE job_history
 IS 'Table that stores job history of the employees. If an employee 
 changes departments within the job or changes jobs within the department, 
@@ -110,7 +109,7 @@ job_id column in the jobs table. A not null column.';
 COMMENT ON COLUMN job_history.department_id
 IS 'Department id in which the employee worked in the past; foreign key to deparment_id column in the departments table';
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 COMMENT ON TABLE countries
 IS 'country table. Contains 25 rows. References with locations table.';
 
@@ -123,7 +122,7 @@ IS 'Country name';
 COMMENT ON COLUMN countries.region_id
 IS 'Region ID for the country. Foreign key to region_id column in the departments table.';
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 COMMENT ON TABLE jobs
 IS 'jobs table with job titles and salary ranges. Contains 19 rows.
 References with employees and job_history table.';
@@ -140,7 +139,7 @@ IS 'Minimum salary for a job title.';
 COMMENT ON COLUMN jobs.max_salary
 IS 'Maximum salary for a job title';
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 COMMENT ON TABLE employees
 IS 'employees table. Contains 107 rows. References with departments, 
 jobs, job_history tables. Contains a self reference.';
@@ -185,4 +184,4 @@ IS 'Department id where employee works; foreign key to department_id
 column of the departments table';
 
 COMMIT;
--- EOF ---------------------------------------------------------------------
+-- EOF -------------------------------------------------------------------------

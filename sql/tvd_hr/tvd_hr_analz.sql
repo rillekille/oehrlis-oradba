@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: tvd_hr_analz.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.10.24
 --  Revision..:  
@@ -14,10 +13,10 @@
 --  Reference.: SYS (or grant manually to a DBA)
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
 --              shown at http://oss.oracle.com/licenses/upl.
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --  Modified..:
 --  see git revision history for more information on changes/updates
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 SET FEEDBACK 1
 SET NUMWIDTH 10
 SET LINESIZE 80
@@ -31,4 +30,4 @@ EXECUTE dbms_stats.gather_schema_stats( -
         granularity => 'ALL'            ,       -
         cascade => TRUE                 ,       -
         block_sample => TRUE            );
--- EOF ---------------------------------------------------------------------
+-- EOF -------------------------------------------------------------------------

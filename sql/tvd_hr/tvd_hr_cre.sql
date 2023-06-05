@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: tvd_hr_cre.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.10.24
 --  Revision..:  
@@ -12,10 +11,10 @@
 --  Reference.: SYS (or grant manually to a DBA)
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
 --              shown at http://oss.oracle.com/licenses/upl.
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --  Modified..:
 --  see git revision history for more information on changes/updates
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 SET FEEDBACK 1
 SET NUMWIDTH 10
 SET LINESIZE 80
@@ -24,7 +23,7 @@ SET TAB OFF
 SET PAGESIZE 100
 SET ECHO OFF 
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Create the REGIONS table to hold region information for locations
 -- TVD_HR.LOCATIONS table has a foreign key to this table.
 
@@ -43,7 +42,7 @@ ADD ( CONSTRAINT reg_id_pk
        		 PRIMARY KEY (region_id)
     ) ;
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Create the COUNTRIES table to hold country information for customers
 -- and company locations. 
 -- TVD_HR.LOCATIONS has a foreign key to this table.
@@ -65,7 +64,7 @@ ADD ( CONSTRAINT countr_reg_fk
           	  REFERENCES regions(region_id) 
     ) ;
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Create the LOCATIONS table to hold address information for company departments.
 -- TVD_HR.DEPARTMENTS has a foreign key to this table.
 
@@ -100,7 +99,7 @@ CREATE SEQUENCE locations_seq
  NOCACHE
  NOCYCLE;
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Create the DEPARTMENTS table to hold company department information.
 -- TVD_HR.EMPLOYEES and TVD_HR.JOB_HISTORY have a foreign key to this table.
 
@@ -134,7 +133,7 @@ CREATE SEQUENCE departments_seq
  NOCACHE
  NOCYCLE;
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Create the JOBS table to hold the different names of job roles within the company.
 -- TVD_HR.EMPLOYEES has a foreign key to this table.
 
@@ -155,7 +154,7 @@ ADD ( CONSTRAINT job_id_pk
       		 PRIMARY KEY(job_id)
     ) ;
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Create the EMPLOYEES table to hold the employee personnel 
 -- information for the company.
 -- TVD_HR.EMPLOYEES has a self referencing foreign key to this table.
@@ -214,7 +213,7 @@ CREATE SEQUENCE employees_seq
  NOCACHE
  NOCYCLE;
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Create the JOB_HISTORY table to hold the history of jobs that 
 -- employees have held in the past.
 -- TVD_HR.JOBS, TVD_HR_DEPARTMENTS, and TVD_HR.EMPLOYEES have a foreign key to this table.
@@ -251,7 +250,7 @@ ADD ( CONSTRAINT jhist_emp_id_st_date_pk
                      REFERENCES departments
     ) ;
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Create the EMP_DETAILS_VIEW that joins the employees, jobs, 
 -- departments, jobs, countries, and locations table to provide details
 -- about employees.
@@ -307,4 +306,4 @@ WHERE e.department_id = d.department_id
 WITH READ ONLY;
 
 COMMIT;
--- EOF ---------------------------------------------------------------------
+-- EOF -------------------------------------------------------------------------

@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: d.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.12.11
 --  Revision..:  
@@ -12,10 +11,10 @@
 --  Reference.: Idea based on a script from tanel@tanelpoder.com
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
 --              shown at http://oss.oracle.com/licenses/upl.
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --  Modified..:
 --  see git revision history for more information on changes/updates
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 COLUMN d_table_name HEADING TABLE_NAME FORMAT A30 
 COLUMN d_comments HEADING COMMENTS FORMAT A80 word_wrap
 BREAK ON d_table_name
@@ -36,4 +35,4 @@ SELECT ft.name d_table_name, (SELECT fvd.view_name
 	FROM v$fixed_table ft
 	WHERE ft.type = 'TABLE'
 	AND upper(ft.name) LIKE upper('%&1%');
--- EOF ---------------------------------------------------------------------
+-- EOF -------------------------------------------------------------------------

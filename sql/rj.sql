@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: rj.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.12.11
 --  Revision..:  
@@ -13,10 +12,10 @@
 --  Reference.: Called as DBA or user with access to v$session_longops
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
 --              shown at http://oss.oracle.com/licenses/upl.
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --  Modified..:
 --  see git revision history for more information on changes/updates
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 COLUMN rj_sid HEAD "SID" FORMAT 999999
 COLUMN rj_serial HEAD "Serial" FORMAT 999999
 COLUMN rj_context HEAD "Context" FORMAT 999999
@@ -39,4 +38,4 @@ SELECT SID rj_sid,
 AND totalwork != 0
 AND sofar     <> totalwork
 ORDER BY 1;
--- EOF ---------------------------------------------------------------------
+-- EOF -------------------------------------------------------------------------

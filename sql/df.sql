@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: df.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.12.11
 --  Revision..:  
@@ -12,10 +11,10 @@
 --  Reference.: Idea based on a script from tanel@tanelpoder.com
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
 --              shown at http://oss.oracle.com/licenses/upl.
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --  Modified..:
 --  see git revision history for more information on changes/updates
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 COL "% Used" FOR a6
 COL "Used" FOR a22
 
@@ -41,4 +40,4 @@ FROM (
 ) t
 WHERE t.tablespace_name = f.tablespace_name (+)
 ORDER BY t.tablespace_name;
--- EOF ---------------------------------------------------------------------
+-- EOF -------------------------------------------------------------------------

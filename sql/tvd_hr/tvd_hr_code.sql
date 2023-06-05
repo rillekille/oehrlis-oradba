@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: tvd_hr_code.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.10.24
 --  Revision..:  
@@ -18,10 +17,10 @@
 --  Reference.: SYS (or grant manually to a DBA)
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
 --              shown at http://oss.oracle.com/licenses/upl.
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --  Modified..:
 --  see git revision history for more information on changes/updates
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 SET FEEDBACK 1
 SET NUMWIDTH 10
 SET LINESIZE 80
@@ -30,7 +29,7 @@ SET TAB OFF
 SET PAGESIZE 100
 SET ECHO OFF
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- procedure and statement trigger to allow dmls during business hours:
 CREATE OR REPLACE PROCEDURE secure_dml
 IS
@@ -52,7 +51,7 @@ END secure_employees;
 
 ALTER TRIGGER secure_employees DISABLE;
 
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- procedure to add a row to the JOB_HISTORY table and row trigger 
 -- to call the procedure when data is updated in the job_id or 
 -- department_id columns in the EMPLOYEES table:
@@ -81,4 +80,4 @@ END;
 /
 
 COMMIT;
--- EOF ---------------------------------------------------------------------
+-- EOF -------------------------------------------------------------------------

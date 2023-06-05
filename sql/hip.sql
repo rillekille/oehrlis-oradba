@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
---  Trivadis AG, Infrastructure Managed Services
---  Saegereistrasse 29, 8152 Glattbrugg, Switzerland
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
+--------------------------------------------------------------------------------
 --  Name......: hip.sql
---  Author....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+--  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.12.11
 --  Revision..:  
@@ -14,10 +13,10 @@
 --  Reference.: 
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
 --              shown at http://oss.oracle.com/licenses/upl.
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --  Modified..:
 --  see git revision history for more information on changes/updates
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 COL Parameter for a40
 COL Session for a9
 COL Instance for a30
@@ -52,4 +51,4 @@ SET HEAD OFF
 SELECT 'Filter on parameter => '||NVL('&parameter','%') FROM dual;    
 SET HEAD ON
 undefine 1
--- EOF ---------------------------------------------------------------------
+-- EOF -------------------------------------------------------------------------
