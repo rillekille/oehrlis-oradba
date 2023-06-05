@@ -6,7 +6,7 @@
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.10.24
 --  Revision..:  
---  Purpose...: Top unified audit events by action for all DBID
+--  Purpose...: Top unified audit events by userhost for current DBID
 --  Notes.....:  
 --  Reference.: SYS (or grant manually to a DBA)
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
@@ -28,6 +28,8 @@ SELECT
     COUNT(*)                events
 FROM
     unified_audit_trail
+WHERE
+    dbid = con_id_to_dbid(sys_context('USERENV', 'CON_ID'))
 GROUP BY
     userhost
 ORDER BY

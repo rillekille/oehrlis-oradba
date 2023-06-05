@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
 --------------------------------------------------------------------------------
---  Name......: aue_dbid.sql
+--  Name......: aue.sql
 --  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.10.24

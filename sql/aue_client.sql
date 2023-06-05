@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
 --------------------------------------------------------------------------------
---  Name......: aue_client_dbid.sql
+--  Name......: aue_client.sql
 --  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.10.24
@@ -28,6 +28,8 @@ SELECT
     COUNT(*)                events
 FROM
     unified_audit_trail
+WHERE
+    dbid = con_id_to_dbid(sys_context('USERENV', 'CON_ID'))
 GROUP BY
     client_program_name
 ORDER BY

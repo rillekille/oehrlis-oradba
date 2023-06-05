@@ -1,12 +1,12 @@
 --------------------------------------------------------------------------------
 --  OraDBA - Oracle Database Infrastructur and Security, 5630 Muri, Switzerland
 --------------------------------------------------------------------------------
---  Name......: aue_object_schema_dbid.sql
+--  Name......: aue_object_schema.sql
 --  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
 --  Date......: 2018.10.24
 --  Revision..:  
---  Purpose...: Top unified audit events by object_schema for all DBID
+--  Purpose...: Top unified audit events by object_schema for current DBID
 --  Notes.....:  
 --  Reference.: SYS (or grant manually to a DBA)
 --  License...: Licensed under the Universal Permissive License v 1.0 as 
@@ -28,6 +28,8 @@ SELECT
     COUNT(*)                events
 FROM
     unified_audit_trail
+WHERE
+    dbid = con_id_to_dbid(sys_context('USERENV', 'CON_ID'))
 GROUP BY
     object_schema
 ORDER BY
