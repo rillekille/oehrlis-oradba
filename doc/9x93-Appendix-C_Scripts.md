@@ -1,44 +1,44 @@
-# Appendix C: Scripts
+# Anhang C: Skripte
 
-## General
+## Allgemeines
 
-For the administration of the *Net Service Names* in the LDAP Directory there
-are a number of tools and scripts are available. These should simplify the
-administration of the entries simplify. Beside these tools the entries can of
-course also be managed directly with the the LDAP utilities *ldapsearch*,
-*ldapadd*, *ldapmodify* or *ldapdelete* as well as with any with every LDAP
-browser. For the read access usually an *ANONYMOUS* LDAP bind is sufficient.
-For write access a bind DN e.g. *cn=Directory Manager* or another user from the
-*TNS Admin* group is needed. So that this does not always have to be specified
-via command line, one can this information directly in a configuration file.
+Für die Administration der *Net Service Names* im LDAP Directory stehen eine Reihe
+von Tools und Skripten zur Verfügung. Diese sollen die verwaltung der Einträge
+vereinfachen. Neben diesen Tools können natürlich die Einträge auch direkt mit
+den LDAP Utilities *ldapsearch*, *ldapadd*, *ldapmodify* oder *ldapdelete* sowie
+mit jedem LDAP Browser verwaltet werden. Für den lesenden Zugriff reicht in der
+Regel ein *ANONYMOUS* LDAP Bind. Für den schreibenden Zugriff wird ein Bind DN
+z.B. *cn=Directory Manager* oder ein anderer Benutzer aus der *TNS Admin* Gruppe
+benötigt. Damit dies nicht immer via Kommandozeile angegeben werden muss, kann man
+diese Information auch direkt in einer Konfigurationsdatei erfassen.
 
-The directory structure of the tools is analogous to the Trivadis *DB Star* tools.
-Thus all scripts, log and configuration files fit into the TVD-BasEnv
-structure. Under the tool directory there are the following directories:
+Die Verzeichnisstruktur der Tools ist analog der Trivadis *DB Star* Tools aufgebaut.
+Somit fügen sich alle Skripte, Log- und Konfigurationsdateien in die TVD-BasEnv
+Struktur ein. Unter dem Tool Verzeichnis gibt es folgende Verzeichnisse:
 
-- **bin** directory for the shell scripts
-- **doc** documentation for *Net Service Names* and LDAP Server
-- **etc** configuration files
-- **images** images for documentation
-- **ldif** LDIF files for initializing the LDAP directories
-- **log** directory for the local log files if *$LOG_BASE* is not defined.
-  is defined.
+- **bin** Verzeichnis für die Shell Skripte
+- **doc** Dokumentation zu *Net Service Names* und LDAP Server
+- **etc** Konfigurationsdateien
+- **images** Bilder zur Dokumentation
+- **ldif** LDIF Dateien zum initialen der LDAP Verzeichnisse
+- **log** Verzeichnis für die lokalen Log Dateien falls *$LOG_BASE* nicht
+  definiert ist.
 
-In *OraDBA* the following tools and scripts are available:
+In *TVD-LDAP* stehen folgende Tools und Skripte zur Verfügung:
 
-- **tns_add.sh** Adding a *Net Service Name* with corresponding
-  *Oracle Net Service Description* in one or more Base DN.
-- tns_delete.sh** Delete an *Oracle Net Service Name* in one or more Base DNs.
+- **tns_add.sh** Hinzufügen eines *Net Service Names* mit entsprechender
+  *Oracle Net Service Description* in einer oder mehreren Base DN.
+- **tns_delete.sh** Löschen eines *Oracle Net Service Names* in einer / mehreren
   Base DN.
-- **tns_dump.sh** Create a *tnsnames.ora* file for one / more Base DN.
-- **tns_functions.sh** general functions for the scripts.
-- **tns_load.sh** loading one or more *tnsnames.ora* files.
-- **tns_modify.sh** Modify an *Oracle Net Service Name* with corresponding
-  *Net Service Description* in one or more Base DN.
-- **tns_search.sh** Search for *Oracle Net Service Names* in one or more Base DN.
+- **tns_dump.sh** Erstellen eines *tnsnames.ora* Files für eine / mehreren Base DN.
+- **tns_functions.sh** allgemeine Funktionen für die Skripte
+- **tns_load.sh** Laden einer oder mehrere *tnsnames.ora* Dateien.
+- **tns_modify.sh** Modifizieren eines *Oracle Net Service Names* mit entsprechender
+  *Net Service Description* in einer oder mehreren Base DN.
+- **tns_search.sh** Suchen von *Oracle Net Service Names* in einer oder mehreren
   Base DN.
-- **tns_test.sh** Test *Oracle Net Service Names* in one or more Base DN.
-  Base DN. The tests are done with *tnsping* and *sqlplus*.
+- **tns_test.sh** Testen von *Oracle Net Service Names* in einer oder mehreren
+  Base DN. Die Tests erfolgen mit *tnsping* und *sqlplus*.
 
 Alle Skripte erstellen bei jeder Ausführung eine Log Datei. Diese werden zentral
 in *$LOG_BASE* gespeichert. Falls *LOG_BASE* nicht definiert ist, wird das *log*
