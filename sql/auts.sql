@@ -24,7 +24,7 @@ COLUMN owner            FORMAT A10 WRAP HEADING "Owner"
 COLUMN segment_name     FORMAT A25 WRAP HEADING "Segment Name"
 COLUMN segment_type     FORMAT A20 WRAP HEADING "Segment Type"
 COLUMN tablespace_name  FORMAT A20 WRAP HEADING "Tablespace Name"
-COLUMN segment_size     FORMAT A10 WRAP HEADING "Size" RIGHT
+COLUMN segment_size     FORMAT A10 WRAP HEADING "Size"
 COLUMN bytes            FORMAT 9,999,999,999 heading "Bytes"
 COLUMN blocks           FORMAT 9,999,999,999 heading "Blocks"
 COLUMN extents          FORMAT 9,999,999,999 heading "extents"

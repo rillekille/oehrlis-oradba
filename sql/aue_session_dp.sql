@@ -50,4 +50,5 @@ DEFINE client_program_name  = &6 &_client_program_name
 UNDEFINE _days,_dbuser _audit_type _os_user _host _client_program_name
 UNDEFINE days dbuser audit_type os_user host client_program_name
 UNDEFINE 1 2 3 4 5 6
+TTITLE OFF
 -- EOF -------------------------------------------------------------------------

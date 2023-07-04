@@ -67,5 +67,5 @@ ORDER BY
 
 UNDEFINE def_sessionid sessionid
 UNDEFINE 1
-TTITLE
+TTITLE OFF
 -- EOF -------------------------------------------------------------------------

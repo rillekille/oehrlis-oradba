@@ -3,7 +3,7 @@
 <folder>
 	<name><![CDATA[Unified Audit Assessment]]></name>
 	<tooltip><![CDATA[Unified Audit Assessment]]></tooltip>
-	<description><![CDATA[ ]]></description>
+	<description><![CDATA[ Analyse Audit data based on UNIFIED_AUDIT_TRAIL]]></description>
 		<display id="6b5d539a-0188-1000-8002-a9fee7d6737b" type="" style="Table" enable="true">
 		<name><![CDATA[Audit Events by Users]]></name>
 		<description><![CDATA[List of Audit Events by Users]]></description>
@@ -15,8 +15,8 @@
 		<query>
 			<sql><![CDATA[SELECT dbusername, count(*) EVENTS FROM unified_audit_trail GROUP BY dbusername ORDER BY events DESC]]></sql>
 		</query>
-		<display id="null" type="" style="Table" enable="true">
-			<name><![CDATA[Audit Policy]]></name>
+		<display id="" type="" style="Table" enable="true">
+			<name><![CDATA[Events by Audit Policy]]></name>
 			<description><![CDATA[]]></description>
 			<tooltip><![CDATA[]]></tooltip>
 			<drillclass><![CDATA[]]></drillclass>
@@ -24,7 +24,7 @@
 				<TYPE><![CDATA[horizontal]]></TYPE>
 			</CustomValues>
 			<query>
-				<sql><![CDATA[SELECT nvl(unified_audit_policies,'n/a'), count(*) EVENTS FROM unified_audit_trail WHERE dbusername =:DBUSERNAME GROUP BY unified_audit_policies ORDER BY events DESC]]></sql>
+				<sql><![CDATA[SELECT unified_audit_policies, count(*) EVENTS FROM unified_audit_trail WHERE dbusername =:DBUSERNAME GROUP BY unified_audit_policies ORDER BY events DESC]]></sql>
 				<binds>
 					<bind id="DBUSERNAME">
 						<prompt><![CDATA[DBUSERNAME]]></prompt>
@@ -35,8 +35,8 @@
 				</binds>
 			</query>
 		</display>
-		<display id="null" type="" style="Table" enable="true">
-			<name><![CDATA[Action]]></name>
+		<display id="" type="" style="Table" enable="true">
+			<name><![CDATA[Events by Action]]></name>
 			<description><![CDATA[]]></description>
 			<tooltip><![CDATA[]]></tooltip>
 			<drillclass><![CDATA[]]></drillclass>
@@ -55,8 +55,8 @@
 				</binds>
 			</query>
 		</display>
-		<display id="null" type="" style="Table" enable="true">
-			<name><![CDATA[Client]]></name>
+		<display id="" type="" style="Table" enable="true">
+			<name><![CDATA[Events by Client]]></name>
 			<description><![CDATA[]]></description>
 			<tooltip><![CDATA[]]></tooltip>
 			<drillclass><![CDATA[]]></drillclass>
@@ -65,27 +65,6 @@
 			</CustomValues>
 			<query>
 				<sql><![CDATA[SELECT userhost, os_username, count(*) EVENTS FROM unified_audit_trail WHERE dbusername =:DBUSERNAME GROUP BY userhost, os_username ORDER BY events DESC]]></sql>
-				<binds>
-					<bind id="DBUSERNAME">
-						<prompt><![CDATA[DBUSERNAME]]></prompt>
-						<tooltip><![CDATA[DBUSERNAME]]></tooltip>
-						<value><![CDATA[NULL_VALUE]]></value>
-						<bracket><![CDATA[null]]></bracket>
-					</bind>
-				</binds>
-			</query>
-		</display>
-		<display id="null" type="" style="Table" enable="true">
-			<name><![CDATA[Policy and Actions]]></name>
-			<description><![CDATA[]]></description>
-			<tooltip><![CDATA[]]></tooltip>
-			<drillclass><![CDATA[]]></drillclass>
-			<CustomValues>
-				<TYPE><![CDATA[horizontal]]></TYPE>
-			</CustomValues>
-			<query>
-				<sql><![CDATA[SELECT dbusername,unified_audit_policies,action_name, count(*) EVENTS FROM unified_audit_trail WHERE dbusername =:DBUSERNAME
-GROUP BY dbusername,unified_audit_policies,action_name ORDER BY unified_audit_policies, events DESC]]></sql>
 				<binds>
 					<bind id="DBUSERNAME">
 						<prompt><![CDATA[DBUSERNAME]]></prompt>
@@ -190,7 +169,7 @@ ORDER BY
 				<bind id="days">
 					<prompt><![CDATA[Number of days to cover]]></prompt>
 					<tooltip><![CDATA[days]]></tooltip>
-					<value><![CDATA[4]]></value>
+					<value><![CDATA[NULL_VALUE]]></value>
 					<bracket><![CDATA[null]]></bracket>
 				</bind>
 			</binds>
@@ -243,7 +222,7 @@ ORDER BY
 				<sql><![CDATA[SELECT 
     --NULL "Events",          -- group
     dbusername,
-    nvl(unified_audit_policies,'n/a'), -- series
+    unified_audit_policies, -- series
     count(*) EVENTS         -- value
     FROM unified_audit_trail
 WHERE dbusername =:DBUSERNAME 
@@ -468,13 +447,13 @@ ORDER BY
 				</bind>
 			</binds>
 		</query>
-		<display id="null" type="" style="Table" enable="true">
+		<display id="" type="" style="Table" enable="true">
 			<name><![CDATA[History]]></name>
 			<description><![CDATA[Audit events for User by Audit Policy]]></description>
 			<tooltip><![CDATA[]]></tooltip>
 			<drillclass><![CDATA[]]></drillclass>
 			<CustomValues>
-				<TYPE><![CDATA[vertical]]></TYPE>
+				<TYPE><![CDATA[horizontal]]></TYPE>
 			</CustomValues>
 			<query>
 				<sql><![CDATA[SELECT 
@@ -484,7 +463,7 @@ ORDER BY
 FROM unified_audit_trail]]></sql>
 			</query>
 		</display>
-		<display id="null" type="" style="Chart" enable="true">
+		<display id="" type="" style="Chart" enable="true">
 			<name><![CDATA[by hour]]></name>
 			<description><![CDATA[Audit Events for User by Action]]></description>
 			<tooltip><![CDATA[]]></tooltip>
@@ -529,36 +508,34 @@ FROM unified_audit_trail]]></sql>
 				<SUBTITLE_ALIGNMENT><![CDATA[LEFT]]></SUBTITLE_ALIGNMENT>
 			</CustomValues>
 			<query>
-				<sql><![CDATA[WITH hour_windows ( time ) AS (
-    SELECT
-        TO_DATE(:Day || to_char(n - 1,'09'), 'DD:MM.YYYY HH24') hr
-    FROM
-        (
-            SELECT
-                level n
-            FROM
-                dual
-            CONNECT BY
-                level <= 24
-        )
-    WHERE :Day IS NOT NULL
-)
-SELECT
-    NULL "Events",                      -- group
-    to_char(trunc(TIME, 'HH24'), 'HH24:MI') "Hours",         -- series
-    coalesce(COUNT(event_timestamp),    
-             0) "Amount"               -- value
+				<sql><![CDATA[SELECT
+    NULL "Events",                  -- group
+    to_char(TRUNC(event_timestamp, 'HH24'),'HH24:MI:SS') "Hour",  -- series
+    COUNT(*) "Amount"               -- value
 FROM
-    hour_windows        t
-    LEFT OUTER JOIN unified_audit_trail u ON ( TIME = trunc(u.event_timestamp, 'HH24')
-                                               AND trunc(u.event_timestamp) = :Day )
+    unified_audit_trail
+WHERE (:days IS NULL OR event_timestamp>=sysdate-:days) AND TRUNC(event_timestamp) = :Day 
 GROUP BY
-    to_char(trunc(TIME, 'HH24'), 'HH24:MI')
+    TRUNC(event_timestamp, 'HH24')
 ORDER BY
-    to_char(trunc(TIME, 'HH24'), 'HH24:MI')]]></sql>
+    TRUNC(event_timestamp, 'HH24')]]></sql>
+				<binds>
+					<bind id="days">
+						<prompt><![CDATA[days]]></prompt>
+						<tooltip><![CDATA[days]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+					<bind id="Day">
+						<prompt><![CDATA[Day]]></prompt>
+						<tooltip><![CDATA[Day]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+				</binds>
 			</query>
 		</display>
-		<display id="null" type="" style="Table" enable="true">
+		<display id="" type="" style="Table" enable="true">
 			<name><![CDATA[DB Info]]></name>
 			<description><![CDATA[Audit Events by DB ID]]></description>
 			<tooltip><![CDATA[]]></tooltip>
@@ -578,7 +555,7 @@ FROM
     gv$instance         i,
     v$database          d
 WHERE
-        u.dbid = con_id_to_dbid(sys_context('USERENV', 'CON_ID'))
+        u.dbid = d.dbid
     AND u.instance_id = i.instance_number
 GROUP BY
     u.dbid,
@@ -587,7 +564,234 @@ GROUP BY
         u.instance_id]]></sql>
 			</query>
 		</display>
-<item  reload="false"  reloadparent="false" removeFromParent="false" className="oracle.dbtools.raptor.report.addin.DrillReportAction" classArgs="6b5d539a-0188-1000-8002-a9fee7d6737b" toolbar="false" ><title>Test</title></item>	</display>
+<item  reload="false"  reloadparent="false" removeFromParent="false" className="oracle.dbtools.raptor.report.addin.DrillReportAction" classArgs="6b5d539a-0188-1000-8002-a9fee7d6737b" toolbar="false" ><title>Test</title><sql><![CDATA[]]></sql><script language="js"><![CDATA[]]></script><help></help></item>	</display>
+	<display id="6d1d03d6-0188-1000-8045-a9fee7d6737b" type="" style="Table" enable="true">
+		<name><![CDATA[Datapump Sessions]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    u.event_timestamp,
+    u.dbusername dbusername,
+    u.sessionid  sessionid,
+    u.proxy_sessionid,
+    u.os_username,
+    u.userhost,
+    u.terminal,
+    u.instance_id,
+    u.statement_id statement_id,
+    u.unified_audit_policies
+FROM
+    unified_audit_trail u,
+    v$database          d
+WHERE
+        u.dbid = d.dbid
+    AND audit_type = 'Datapump']]></sql>
+		</query>
+		<display id="" type="" style="Table" enable="true">
+			<name><![CDATA[Details]]></name>
+			<description><![CDATA[]]></description>
+			<tooltip><![CDATA[]]></tooltip>
+			<drillclass><![CDATA[]]></drillclass>
+			<CustomValues>
+				<TYPE><![CDATA[vertical]]></TYPE>
+			</CustomValues>
+			<query>
+				<sql><![CDATA[SELECT sql_text,DP_TEXT_PARAMETERS1,DP_BOOLEAN_PARAMETERS1 from 
+    unified_audit_trail
+    WHERE dbusername=:DBUSERNAME AND sessionid=:SESSIONID
+    AND statement_id = :STATEMENT_ID]]></sql>
+				<binds>
+					<bind id="DBUSERNAME">
+						<prompt><![CDATA[DBUSERNAME]]></prompt>
+						<tooltip><![CDATA[DBUSERNAME]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+					<bind id="SESSIONID">
+						<prompt><![CDATA[SESSIONID]]></prompt>
+						<tooltip><![CDATA[SESSIONID]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+					<bind id="STATEMENT_ID">
+						<prompt><![CDATA[STATEMENT_ID]]></prompt>
+						<tooltip><![CDATA[STATEMENT_ID]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+				</binds>
+			</query>
+		</display>
+	</display>
+	<display id="6d337919-0188-1000-8003-a9fee7d659c8" type="" style="Table" enable="true">
+		<name><![CDATA[RMAN Sessions]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    u.event_timestamp,
+    u.dbusername dbusername,
+    u.sessionid  sessionid,
+    u.proxy_sessionid,
+    u.os_username,
+    u.userhost,
+    u.terminal,
+    u.instance_id,
+    u.statement_id statement_id,
+    u.unified_audit_policies
+FROM
+    unified_audit_trail u,
+    v$database          d
+WHERE
+        u.dbid = d.dbid
+    AND audit_type = 'RMAN_AUDIT']]></sql>
+		</query>
+		<display id="" type="" style="Table" enable="true">
+			<name><![CDATA[Details]]></name>
+			<description><![CDATA[]]></description>
+			<tooltip><![CDATA[]]></tooltip>
+			<drillclass><![CDATA[]]></drillclass>
+			<CustomValues>
+				<TYPE><![CDATA[vertical]]></TYPE>
+			</CustomValues>
+			<query>
+				<sql><![CDATA[SELECT
+    sql_text,
+    rman_session_recid,
+    rman_session_stamp,
+    rman_operation,
+    rman_object_type,
+    rman_device_type
+FROM
+    unified_audit_trail
+WHERE
+        dbusername = :dbusername
+    AND sessionid = :sessionid
+    AND statement_id = :statement_id]]></sql>
+				<binds>
+					<bind id="dbusername">
+						<prompt><![CDATA[dbusername]]></prompt>
+						<tooltip><![CDATA[dbusername]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+					<bind id="sessionid">
+						<prompt><![CDATA[sessionid]]></prompt>
+						<tooltip><![CDATA[sessionid]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+					<bind id="statement_id">
+						<prompt><![CDATA[statement_id]]></prompt>
+						<tooltip><![CDATA[statement_id]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+				</binds>
+			</query>
+		</display>
+	</display>
+	<display id="6d497ec3-0188-1000-800b-a9fee7d659c8" type="" style="Table" enable="true">
+		<name><![CDATA[Standard Sessions]]></name>
+		<description><![CDATA[]]></description>
+		<tooltip><![CDATA[]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    to_char(min(u.event_timestamp),'DD.MM.YYYY HH24:MI:SS') "Initial Event",
+    u.dbusername          dbusername,
+    u.sessionid           sessionid,
+    u.os_username         "OS User",
+    u.userhost            "User Hosst",
+    u.instance_id         "Instance Number",
+    COUNT(u.entry_id)     "Audit Entries"
+FROM
+    unified_audit_trail u,
+    v$database          d
+WHERE
+        u.dbid = d.dbid
+    AND audit_type = 'Standard'
+    AND (:days IS NULL OR event_timestamp>=sysdate-:days)
+    AND (:dbuser IS NULL OR dbusername = upper(:dbuser))
+GROUP BY
+    u.dbusername,
+    u.sessionid,
+    u.proxy_sessionid,
+    u.os_username,
+    u.userhost,
+    u.instance_id
+ORDER BY
+    "Initial Event" DESC]]></sql>
+			<binds>
+				<bind id="days">
+					<prompt><![CDATA[days]]></prompt>
+					<tooltip><![CDATA[days]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+				<bind id="dbuser">
+					<prompt><![CDATA[dbuser]]></prompt>
+					<tooltip><![CDATA[dbuser]]></tooltip>
+					<value><![CDATA[NULL_VALUE]]></value>
+					<bracket><![CDATA[null]]></bracket>
+				</bind>
+			</binds>
+		</query>
+		<display id="" type="" style="Table" enable="true">
+			<name><![CDATA[Details]]></name>
+			<description><![CDATA[]]></description>
+			<tooltip><![CDATA[]]></tooltip>
+			<drillclass><![CDATA[]]></drillclass>
+			<CustomValues>
+				<TYPE><![CDATA[horizontal]]></TYPE>
+			</CustomValues>
+			<query>
+				<sql><![CDATA[SELECT
+    to_char(event_timestamp, 'DD.MM.YYYY HH24:MI:SS') "Event Time",
+    entry_id,
+    statement_id,
+    action_name,
+    return_code,
+    object_schema,
+    object_name,
+    sql_text
+FROM
+    unified_audit_trail
+WHERE
+    dbusername    = :DBUSERNAME
+    AND sessionid = :SESSIONID
+ORDER BY
+    event_timestamp ASC,
+    entry_id ASC]]></sql>
+				<binds>
+					<bind id="DBUSERNAME">
+						<prompt><![CDATA[DBUSERNAME]]></prompt>
+						<tooltip><![CDATA[DBUSERNAME]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+					<bind id="SESSIONID">
+						<prompt><![CDATA[SESSIONID]]></prompt>
+						<tooltip><![CDATA[SESSIONID]]></tooltip>
+						<value><![CDATA[NULL_VALUE]]></value>
+						<bracket><![CDATA[null]]></bracket>
+					</bind>
+				</binds>
+			</query>
+		</display>
+	</display>
 	<folder>
 		<name><![CDATA[Audit Sessions]]></name>
 		<tooltip><![CDATA[Audit Sessions]]></tooltip>
@@ -1351,7 +1555,7 @@ ORDER BY
 					</bind>
 				</binds>
 			</query>
-			<display id="null" type="" style="Table" enable="true">
+			<display id="" type="" style="Table" enable="true">
 				<name><![CDATA[Details]]></name>
 				<description><![CDATA[]]></description>
 				<tooltip><![CDATA[]]></tooltip>
@@ -1654,6 +1858,118 @@ FROM
             events DESC
     )]]></sql>
 			</query>
+			<display id="null" type="" style="Table" enable="true">
+				<name><![CDATA[Top Actions]]></name>
+				<description><![CDATA[]]></description>
+				<tooltip><![CDATA[]]></tooltip>
+				<drillclass><![CDATA[]]></drillclass>
+				<CustomValues>
+					<TYPE><![CDATA[horizontal]]></TYPE>
+				</CustomValues>
+				<query>
+					<sql><![CDATA[SELECT
+    nvl(action_name, 'n/a') action_name,
+    COUNT(*)                events
+FROM
+    unified_audit_trail
+WHERE
+    unified_audit_policies = :UNIFIED_AUDIT_POLICIES
+GROUP BY
+    action_name
+ORDER BY
+    events DESC]]></sql>
+					<binds>
+						<bind id="UNIFIED_AUDIT_POLICIES">
+							<prompt><![CDATA[UNIFIED_AUDIT_POLICIES]]></prompt>
+							<tooltip><![CDATA[UNIFIED_AUDIT_POLICIES]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
+				</query>
+			</display>
+			<display id="null" type="" style="Table" enable="true">
+				<name><![CDATA[Top Clients]]></name>
+				<description><![CDATA[]]></description>
+				<tooltip><![CDATA[]]></tooltip>
+				<drillclass><![CDATA[]]></drillclass>
+				<CustomValues>
+					<TYPE><![CDATA[horizontal]]></TYPE>
+				</CustomValues>
+				<query>
+					<sql><![CDATA[SELECT
+    nvl(userhost, 'n/a') userhost,
+    COUNT(*)                events
+FROM
+    unified_audit_trail
+WHERE
+    unified_audit_policies = :UNIFIED_AUDIT_POLICIES
+GROUP BY
+    userhost
+ORDER BY
+    events DESC]]></sql>
+				</query>
+			</display>
+			<display id="null" type="" style="Table" enable="true">
+				<name><![CDATA[Top Objects]]></name>
+				<description><![CDATA[]]></description>
+				<tooltip><![CDATA[]]></tooltip>
+				<drillclass><![CDATA[]]></drillclass>
+				<CustomValues>
+					<TYPE><![CDATA[horizontal]]></TYPE>
+				</CustomValues>
+				<query>
+					<sql><![CDATA[SELECT
+    nvl(object_name, 'n/a') object_name,
+    COUNT(*)                events
+FROM
+    unified_audit_trail
+WHERE
+    unified_audit_policies = :UNIFIED_AUDIT_POLICIES
+GROUP BY
+    object_name
+ORDER BY
+    events DESC]]></sql>
+					<binds>
+						<bind id="UNIFIED_AUDIT_POLICIES">
+							<prompt><![CDATA[UNIFIED_AUDIT_POLICIES]]></prompt>
+							<tooltip><![CDATA[UNIFIED_AUDIT_POLICIES]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
+				</query>
+			</display>
+			<display id="null" type="" style="Table" enable="true">
+				<name><![CDATA[Top Users]]></name>
+				<description><![CDATA[]]></description>
+				<tooltip><![CDATA[]]></tooltip>
+				<drillclass><![CDATA[]]></drillclass>
+				<CustomValues>
+					<TYPE><![CDATA[horizontal]]></TYPE>
+				</CustomValues>
+				<query>
+					<sql><![CDATA[SELECT
+    nvl(dbusername, 'n/a') dbusername,
+    COUNT(*)                events
+FROM
+    unified_audit_trail
+WHERE
+    unified_audit_policies = :UNIFIED_AUDIT_POLICIES
+GROUP BY
+    dbusername
+ORDER BY
+    events DESC]]></sql>
+					<binds>
+						<bind id="UNIFIED_AUDIT_POLICIES">
+							<prompt><![CDATA[UNIFIED_AUDIT_POLICIES]]></prompt>
+							<tooltip><![CDATA[UNIFIED_AUDIT_POLICIES]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
+				</query>
+			</display>
 		</display>
 		<display id="7aa11512-0188-1000-8083-ac13d0074407" type="" style="Table" enable="true">
 			<name><![CDATA[Top Audit Events by Audit Type]]></name>
@@ -1854,20 +2170,68 @@ FROM
 			<query>
 				<sql><![CDATA[SELECT
     "OBJECT_NAME",
+    "OBJECT_SCHEMA",
     "EVENTS"
 FROM
     (
         SELECT
-            nvl(object_name, 'n/a') object_name,
-            COUNT(*)               events
+            nvl(object_name, 'n/a')   object_name,
+            nvl(object_schema, 'n/a') object_schema,
+            COUNT(*)                  events
         FROM
             unified_audit_trail
         GROUP BY
-            object_name
+            object_name,
+            object_schema
         ORDER BY
             events DESC
     )]]></sql>
 			</query>
+			<display id="" type="" style="Table" enable="true">
+				<name><![CDATA[Session Overview]]></name>
+				<description><![CDATA[Overview of sessions accessing this object]]></description>
+				<tooltip><![CDATA[Session Overview]]></tooltip>
+				<drillclass><![CDATA[]]></drillclass>
+				<CustomValues>
+					<TYPE><![CDATA[horizontal]]></TYPE>
+				</CustomValues>
+				<query>
+					<sql><![CDATA[SELECT
+    event_timestamp,
+    dbusername,
+    sessionid,
+    proxy_sessionid,
+    entry_id,
+    statement_id,
+    action_name,
+    return_code,
+    object_schema,
+    object_name,
+    unified_audit_policies,
+    sql_text
+FROM
+    unified_audit_trail
+WHERE
+    object_schema = :OBJECT_SCHEMA AND object_name = :OBJECT_NAME
+ORDER BY
+    event_timestamp ASC,
+    entry_id ASC]]></sql>
+					<binds>
+						<bind id="OBJECT_SCHEMA">
+							<prompt><![CDATA[OBJECT_SCHEMA]]></prompt>
+							<tooltip><![CDATA[OBJECT_SCHEMA]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+						<bind id="OBJECT_NAME">
+							<prompt><![CDATA[OBJECT_NAME]]></prompt>
+							<tooltip><![CDATA[OBJECT_NAME]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
+				</query>
+			</display>
 		</display>
 		<display id="7ab2d2d6-0188-1000-80b4-ac13d0074407" type="" style="Table" enable="true">
 			<name><![CDATA[Top Audit Events by Application Context]]></name>
@@ -1947,6 +2311,89 @@ FROM
     )]]></sql>
 			</query>
 		</display>
+		<display id="1fa7b0b0-0189-1000-8008-a9fee7d640e5" type="" style="Table" enable="true">
+			<name><![CDATA[Top Audit Events by none Oracle Object Name]]></name>
+			<description><![CDATA[Top Audit Events by Object Name without Oracle maintained schemas]]></description>
+			<tooltip><![CDATA[Top Audit Events by none Oracle Object Name]]></tooltip>
+			<drillclass><![CDATA[]]></drillclass>
+			<CustomValues>
+				<TYPE><![CDATA[horizontal]]></TYPE>
+			</CustomValues>
+			<query>
+				<sql><![CDATA[SELECT
+    "OBJECT_NAME",
+    "OBJECT_SCHEMA",
+    "EVENTS"
+FROM
+    (
+        SELECT
+            nvl(object_name, 'n/a')   object_name,
+            nvl(object_schema, 'n/a') object_schema,
+            COUNT(*)                  events
+        FROM
+            unified_audit_trail
+        WHERE
+            object_schema NOT IN (
+                SELECT
+                    username
+                FROM
+                    dba_users
+                WHERE
+                    oracle_maintained = 'Y'
+            )
+        GROUP BY
+            object_name,
+            object_schema
+        ORDER BY
+            events DESC
+    )]]></sql>
+			</query>
+			<display id="" type="" style="Table" enable="true">
+				<name><![CDATA[Session Details]]></name>
+				<description><![CDATA[Session accessing this objects]]></description>
+				<tooltip><![CDATA[Session Details]]></tooltip>
+				<drillclass><![CDATA[]]></drillclass>
+				<CustomValues>
+					<TYPE><![CDATA[horizontal]]></TYPE>
+				</CustomValues>
+				<query>
+					<sql><![CDATA[SELECT
+    event_timestamp,
+    dbusername,
+    sessionid,
+    proxy_sessionid,
+    entry_id,
+    statement_id,
+    action_name,
+    return_code,
+    object_schema,
+    object_name,
+    unified_audit_policies,
+    sql_text
+FROM
+    unified_audit_trail
+WHERE
+    object_schema = :OBJECT_SCHEMA AND object_name = :OBJECT_NAME
+ORDER BY
+    event_timestamp ASC,
+    entry_id ASC]]></sql>
+					<binds>
+						<bind id="OBJECT_SCHEMA">
+							<prompt><![CDATA[OBJECT_SCHEMA]]></prompt>
+							<tooltip><![CDATA[OBJECT_SCHEMA]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+						<bind id="OBJECT_NAME">
+							<prompt><![CDATA[OBJECT_NAME]]></prompt>
+							<tooltip><![CDATA[OBJECT_NAME]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
+				</query>
+			</display>
+<item  reload="false"  reloadparent="false" removeFromParent="false" className="oracle.dbtools.raptor.report.addin.DrillReportAction" classArgs="6dd94e9e-0188-1000-800f-c0a8013d2c4a" toolbar="false" ><title>Session Details</title><sql><![CDATA[]]></sql><script language="js"><![CDATA[]]></script><help></help></item>		</display>
 	</folder>
 	<folder>
 		<name><![CDATA[Generate Statements]]></name>
@@ -1960,8 +2407,7 @@ FROM
 			<CustomValues>
 			</CustomValues>
 			<query>
-				<sql><![CDATA[SELECT "'NOAUDITPOLICY'||POLICY_NAME||';'||CHR(10)" FROM(
-SELECT
+				<sql><![CDATA[SELECT
     'NOAUDIT POLICY '
     || policy_name
     || ';'
@@ -1995,8 +2441,7 @@ FROM
     audit_unified_enabled_policies
 WHERE
         entity_name <> 'ALL USERS'
-    AND entity_type = 'USER'
-)]]></sql>
+    AND entity_type = 'USER']]></sql>
 			</query>
 		</display>
 		<display id="7abfcd2d-0188-1000-80c1-ac13d0074407" type="" style="Code" enable="true">
@@ -2007,8 +2452,7 @@ WHERE
 			<CustomValues>
 			</CustomValues>
 			<query>
-				<sql><![CDATA[SELECT "'AUDITPOLICY'||POLICY_NAME||';'||CHR(10)" FROM(
-SELECT
+				<sql><![CDATA[SELECT
     'AUDIT POLICY '
     || policy_name
     || ';'
@@ -2042,8 +2486,7 @@ FROM
     audit_unified_enabled_policies
 WHERE
         entity_name <> 'ALL USERS'
-    AND entity_type = 'USER'
-)]]></sql>
+    AND entity_type = 'USER']]></sql>
 			</query>
 		</display>
 		<display id="7ac1c907-0188-1000-80c4-ac13d0074407" type="" style="Code" enable="true">
@@ -2076,13 +2519,13 @@ GROUP BY
 			</CustomValues>
 			<query>
 				<sql><![CDATA[SELECT
-    '-- Create statement for audit policy '
+    '-- '
     || policy_name
     || CHR(10)
     || TRIM(TRAILING CHR(10) FROM TRIM(TRIM(CHR(10) FROM command)))
     || ';'
     || CHR(10)
-    || CHR(10) AS code
+    || CHR(10)
 FROM
     (
         SELECT
@@ -2214,7 +2657,7 @@ ORDER BY
     a.enabled_option,
     a.entity_name]]></sql>
 			</query>
-			<display id="null" type="" style="Code" enable="true">
+			<display id="" type="" style="Code" enable="true">
 				<name><![CDATA[Comment]]></name>
 				<description><![CDATA[Display the description for a specific Unified Audit Policy if it is available in AUDIT_UNIFIED_POLICY_COMMENTS.]]></description>
 				<tooltip><![CDATA[Audit Policy Comment]]></tooltip>
@@ -2233,7 +2676,7 @@ ORDER BY
 					</binds>
 				</query>
 			</display>
-			<display id="null" type="" style="Table" enable="true">
+			<display id="" type="" style="Table" enable="true">
 				<name><![CDATA[Actions]]></name>
 				<description><![CDATA[Display details about a specific unified audit policy based on view AUDIT_UNIFIED_POLICIES.]]></description>
 				<tooltip><![CDATA[Audit Policy Configuration Details]]></tooltip>
@@ -2243,17 +2686,9 @@ ORDER BY
 				</CustomValues>
 				<query>
 					<sql><![CDATA[SELECT * FROM audit_unified_policies WHERE policy_name=:POLICY_NAME]]></sql>
-					<binds>
-						<bind id="POLICY_NAME">
-							<prompt><![CDATA[POLICY_NAME]]></prompt>
-							<tooltip><![CDATA[POLICY_NAME]]></tooltip>
-							<value><![CDATA[NULL_VALUE]]></value>
-							<bracket><![CDATA[null]]></bracket>
-						</bind>
-					</binds>
 				</query>
 			</display>
-			<display id="null" type="" style="Code" enable="true">
+			<display id="" type="" style="Code" enable="true">
 				<name><![CDATA[NOAUDIT Statement]]></name>
 				<description><![CDATA[Create the NOAUDIT POLICY statements for this unified audit policy as it is defined in AUDIT_UNIFIED_ENABLED_POLICIES]]></description>
 				<tooltip><![CDATA[NOAUDIT POLICY]]></tooltip>
@@ -2299,9 +2734,17 @@ WHERE
         policy_name = :POLICY_NAME
     AND entity_name <> 'ALL USERS'
     AND entity_type = 'USER']]></sql>
+					<binds>
+						<bind id="POLICY_NAME">
+							<prompt><![CDATA[POLICY_NAME]]></prompt>
+							<tooltip><![CDATA[POLICY_NAME]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
 				</query>
 			</display>
-			<display id="null" type="" style="Code" enable="true">
+			<display id="" type="" style="Code" enable="true">
 				<name><![CDATA[AUDIT Statement]]></name>
 				<description><![CDATA[Create the AUDIT POLICY statements for this unified audit policy as it is defined in AUDIT_UNIFIED_ENABLED_POLICIES]]></description>
 				<tooltip><![CDATA[AUDIT POLICY]]></tooltip>
@@ -2347,9 +2790,17 @@ WHERE
         policy_name = :POLICY_NAME
     AND entity_name <> 'ALL USERS'
     AND entity_type = 'USER']]></sql>
+					<binds>
+						<bind id="POLICY_NAME">
+							<prompt><![CDATA[POLICY_NAME]]></prompt>
+							<tooltip><![CDATA[POLICY_NAME]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
 				</query>
 			</display>
-			<display id="null" type="" style="Code" enable="true">
+			<display id="" type="" style="Code" enable="true">
 				<name><![CDATA[CREATE Statement]]></name>
 				<description><![CDATA[Create the CREATE AUDIT POLICY statements for this unified audit policy as it is defined in AUDIT_UNIFIED_ENABLED_POLICIES]]></description>
 				<tooltip><![CDATA[CREATE AUDIT POLICY]]></tooltip>
@@ -2366,9 +2817,17 @@ FROM
         FROM
             dual
     )]]></sql>
+					<binds>
+						<bind id="POLICY_NAME">
+							<prompt><![CDATA[POLICY_NAME]]></prompt>
+							<tooltip><![CDATA[POLICY_NAME]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
 				</query>
 			</display>
-			<display id="null" type="" style="Table" enable="true">
+			<display id="" type="" style="Table" enable="true">
 				<name><![CDATA[DROP Statement]]></name>
 				<description><![CDATA[Create the DROP AUDIT POLICY statement for this unified audit policy]]></description>
 				<tooltip><![CDATA[DROP AUDIT POLICY]]></tooltip>
@@ -2388,9 +2847,17 @@ WHERE
     policy_name = :POLICY_NAME
 GROUP BY 
     policy_name]]></sql>
+					<binds>
+						<bind id="POLICY_NAME">
+							<prompt><![CDATA[POLICY_NAME]]></prompt>
+							<tooltip><![CDATA[POLICY_NAME]]></tooltip>
+							<value><![CDATA[NULL_VALUE]]></value>
+							<bracket><![CDATA[null]]></bracket>
+						</bind>
+					</binds>
 				</query>
 			</display>
-			<display id="null" type="" style="Table" enable="true">
+			<display id="" type="" style="Table" enable="true">
 				<name><![CDATA[Events]]></name>
 				<description><![CDATA[]]></description>
 				<tooltip><![CDATA[]]></tooltip>
@@ -2401,6 +2868,55 @@ GROUP BY
 				<query>
 					<sql><![CDATA[SELECT nvl(count(*),0) AS events FROM unified_audit_trail WHERE :POLICY_NAME IS NOT NULL AND
 unified_audit_policies LIKE '%' || :POLICY_NAME || '%']]></sql>
+				</query>
+			</display>
+			<display id="" type="" style="Table" enable="true">
+				<name><![CDATA[Inactive Policies]]></name>
+				<description><![CDATA[Audit Events for inative policies]]></description>
+				<tooltip><![CDATA[]]></tooltip>
+				<drillclass><![CDATA[]]></drillclass>
+				<CustomValues>
+					<TYPE><![CDATA[horizontal]]></TYPE>
+				</CustomValues>
+				<query>
+					<sql><![CDATA[SELECT
+    policy_name
+FROM
+    (
+        SELECT
+            policy_name
+        FROM
+            (
+                SELECT
+                    regexp_substr(unified_audit_policies, '[^,]+', 1, level) AS policy_name
+                FROM
+                    (
+                        SELECT
+                            nvl(regexp_replace(unified_audit_policies, '[[:space:]]+', ''),
+                                'n/a') unified_audit_policies
+                        FROM
+                            unified_audit_trail
+                        GROUP BY
+                            unified_audit_policies
+                    )
+                CONNECT BY
+                    regexp_substr(unified_audit_policies, '[^,]+', 1, level) IS NOT NULL
+            )
+        GROUP BY
+            policy_name
+        ORDER BY
+            policy_name
+    )
+WHERE
+    policy_name NOT IN (
+        SELECT
+            policy_name
+        FROM
+            audit_unified_enabled_policies
+        GROUP BY
+            policy_name
+    )
+    AND policy_name <> 'n/a']]></sql>
 				</query>
 			</display>
 		</display>
@@ -2608,7 +3124,7 @@ FROM
             owner = 'AUDSYS'
     )]]></sql>
 			</query>
-			<display id="null" type="" style="Table" enable="true">
+			<display id="" type="" style="Table" enable="true">
 				<name><![CDATA[Partitions]]></name>
 				<description><![CDATA[]]></description>
 				<tooltip><![CDATA[]]></tooltip>
@@ -2627,7 +3143,7 @@ ORDER BY
     segment_name]]></sql>
 				</query>
 			</display>
-			<display id="null" type="" style="Code" enable="true">
+			<display id="" type="" style="Code" enable="true">
 				<name><![CDATA[Storage Statements]]></name>
 				<description><![CDATA[]]></description>
 				<tooltip><![CDATA[]]></tooltip>
@@ -2641,7 +3157,7 @@ FROM
     (
         SELECT
             1                                                            AS id,
-            '-- Alter unified audit trail partition interval ('
+            '-- Purge audit trail using last archive timestamp current DBID ('
             || con_id_to_dbid(sys_context('USERENV', 'CON_ID'))
             || ')' || CHR(10) AS code
         FROM
@@ -2651,11 +3167,11 @@ FROM
             2          AS id,
             'BEGIN'
             || CHR(10)
-            || '  dbms_audit_mgmt.alter_partition_interval('
+            || '    dbms_audit_mgmt.alter_partition_interval('
             || CHR(10)
-            || '    interval_number       => 1,'
+            || '        interval_number       => 1,'
             || CHR(10)
-            || '    interval_frequency    => ''DAY'');'
+            || '        interval_frequency    => ''DAY'');'
             || CHR(10)
             || 'END;'
             || CHR(10)
@@ -2675,11 +3191,11 @@ FROM
             4          AS id,
             'BEGIN'
             || CHR(10)
-            || '  dbms_audit_mgmt.set_audit_trail_location('
+            || '    dbms_audit_mgmt.set_audit_trail_location('
             || CHR(10)
-            || '    audit_trail_type            => dbms_audit_mgmt.audit_trail_unified,'
+            || '        audit_trail_type            => dbms_audit_mgmt.audit_trail_unified,'
             || CHR(10)
-            || '    audit_trail_location_value  =>  ''AUDIT_DATA'');'
+            || '        audit_trail_location_value  =>  ''AUDIT_DATA'');'
             || CHR(10)
             || 'END;'
             || CHR(10)
@@ -2699,7 +3215,7 @@ FROM
             6          AS id,
             'BEGIN'
             || CHR(10)
-            || '  dbms_audit_mgmt.load_unified_audit_files();'
+            || '    dbms_audit_mgmt.load_unified_audit_files();'
             || CHR(10)
             || 'END;'
             || CHR(10)
@@ -2711,7 +3227,7 @@ FROM
     )]]></sql>
 				</query>
 			</display>
-			<display id="null" type="" style="Code" enable="true">
+			<display id="" type="" style="Code" enable="true">
 				<name><![CDATA[Purge Statements]]></name>
 				<description><![CDATA[]]></description>
 				<tooltip><![CDATA[]]></tooltip>
@@ -2736,11 +3252,11 @@ FROM
             2          AS id,
             'BEGIN'
             || CHR(10)
-            || '  dbms_audit_mgmt.clean_audit_trail('
+            || '    dbms_audit_mgmt.clean_audit_trail('
             || CHR(10)
-            || '    audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified,'
+            || '        audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified,'
             || CHR(10)
-            || '    use_last_arch_timestamp  =>  TRUE);'
+            || '        use_last_arch_timestamp  =>  TRUE);'
             || CHR(10)
             || 'END;'
             || CHR(10)
@@ -2763,11 +3279,11 @@ FROM
             4          AS id,
             'BEGIN'
             || CHR(10)
-            || '  dbms_audit_mgmt.clean_audit_trail('
+            || '    dbms_audit_mgmt.clean_audit_trail('
             || CHR(10)
-            || '    audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified,'
+            || '        audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified,'
             || CHR(10)
-            || '    use_last_arch_timestamp  =>  FALSE);'
+            || '        use_last_arch_timestamp  =>  FALSE);'
             || CHR(10)
             || 'END;'
             || CHR(10)
@@ -2791,13 +3307,13 @@ FROM
                     6          AS id,
                     'BEGIN'
                     || CHR(10)
-                    || '  dbms_audit_mgmt.clean_audit_trail('
+                    || '    dbms_audit_mgmt.clean_audit_trail('
                     || CHR(10)
-                    || '    audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified,'
+                    || '        audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified,'
                     || CHR(10)
-                    || '    use_last_arch_timestamp  =>  FALSE,'
+                    || '        use_last_arch_timestamp  =>  FALSE,'
                     || CHR(10)
-                    || '    database_id              =>  '
+                    || '        database_id              =>  '
                     || dbid
                     || ');'
                     || CHR(10)
@@ -2826,11 +3342,11 @@ FROM
             11         AS id,
             'BEGIN'
             || CHR(10)
-            || '  dbms_audit_mgmt.set_last_archive_timestamp('
+            || '    dbms_audit_mgmt.set_last_archive_timestamp('
             || CHR(10)
-            || '    audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified,'
+            || '        audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified,'
             || CHR(10)
-            || '    last_archive_time        =>  to_timestamp('''
+            || '        last_archive_time        =>  to_timestamp('''
             || to_char(sysdate - 1 / 12, 'DD.MM.YYYY HH24:MI:SS')
             || ''',''DD.MM.YYYY HH24:MI:SS''));'
             || CHR(10)
@@ -2852,9 +3368,9 @@ FROM
             13         AS id,
             'BEGIN'
             || CHR(10)
-            || '  dbms_audit_mgmt.clear_last_archive_timestamp('
+            || '    dbms_audit_mgmt.clear_last_archive_timestamp('
             || CHR(10)
-            || '    audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified);'
+            || '        audit_trail_type         =>  dbms_audit_mgmt.audit_trail_unified);'
             || CHR(10)
             || 'END;'
             || CHR(10)
@@ -2868,5 +3384,43 @@ FROM
 			</display>
 		</display>
 	</folder>
+	<display id="1f988096-0189-1000-8003-a9fee7d640e5" type="" style="Table" enable="true">
+		<name><![CDATA[Top Audit Events by none Oracle Object Name]]></name>
+		<description><![CDATA[Top Audit Events by Object Name without Oracle maintained schemas]]></description>
+		<tooltip><![CDATA[Top Audit Events by none Oracle Object Name]]></tooltip>
+		<drillclass><![CDATA[]]></drillclass>
+		<CustomValues>
+			<TYPE><![CDATA[horizontal]]></TYPE>
+		</CustomValues>
+		<query>
+			<sql><![CDATA[SELECT
+    "OBJECT_NAME",
+    "OBJECT_SCHEMA",
+    "EVENTS"
+FROM
+    (
+        SELECT
+            nvl(object_name, 'n/a')   object_name,
+            nvl(object_schema, 'n/a') object_schema,
+            COUNT(*)                  events
+        FROM
+            unified_audit_trail
+        WHERE
+            object_schema NOT IN (
+                SELECT
+                    username
+                FROM
+                    dba_users
+                WHERE
+                    oracle_maintained = 'Y'
+            )
+        GROUP BY
+            object_name,
+            object_schema
+        ORDER BY
+            events DESC
+    )]]></sql>
+		</query>
+	</display>
 </folder>
 </displays>
