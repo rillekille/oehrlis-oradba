@@ -5,9 +5,7 @@ and tools are available.
 
 ## Command Line based SQL Scripts
 
-Within the GitLab Repository for MODS-HE there are a bunch of scripts available
-in [mods-he/CDB](https://scm.swisscom.com/mods-he/CDB/-/tree/taafalo2_audit_newconcept/roles/sec_audit/templates/tools)
-branch [taafalo2_audit_newconcept](https://scm.swisscom.com/mods-he/CDB/-/commits/taafalo2_audit_newconcept)
+There are a bunch of audit specific scripts available within this git repository.
 
 | Script                           | Purpose                                                                                                        |
 |----------------------------------|----------------------------------------------------------------------------------------------------------------|
@@ -47,8 +45,7 @@ branch [taafalo2_audit_newconcept](https://scm.swisscom.com/mods-he/CDB/-/commit
 
 ## SQL Developer Reports
 
-Predefined reports for Unified Audit Assessment available via GitLab Repository
-for MODS-HE see [unified_audit_reports.xml](https://scm.swisscom.com/mods-he/CDB/-/blob/taafalo2_audit_newconcept/roles/sec_audit/templates/tools/unified_audit_reports.xml)
+Predefined reports for Unified Audit Assessment available via [unified_audit_reports.xml](https://github.com/oehrlis/oradba/blob/b4bc6e713405e8836e21532b6e0cd4075a576848/sql/unified_audit_reports.xml)
 
 The scripts are divided into the following categories.
 
