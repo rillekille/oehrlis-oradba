@@ -6,7 +6,8 @@
 --  Editor....: Stefan Oehrli
 --  Date......: 2023.07.06
 --  Usage.....: 
---  Purpose...: Show local audit policies policies  
+--  Purpose...: Show local audit policies policies. A join of the views
+--              AUDIT_UNIFIED_POLICIES and AUDIT_UNIFIED_ENABLED_POLICIES  
 --  Notes.....: 
 --  Reference.: 
 --  License...: Apache License Version 2.0, January 2004 as shown

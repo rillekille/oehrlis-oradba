@@ -77,7 +77,7 @@ The following SQL scripts are available.
 | [cdua_init.sql](cdua_init.sql)                       | Initialize Audit environment (create tablespace, reorganize tables, create jobs)                     |
 | [caua_pol.sql](caua_pol.sql)                         | Create custom local audit policies policies                                                          |
 | [iaua_pol.sql](iaua_pol.sql)                         | Enable custom local audit policies policies                                                          |
-| [saua_pol.sql](saua_pol.sql)                         | Show local audit policies policies                                                                   |
+| [saua_pol.sql](saua_pol.sql)                         | Show local audit policies policies. A join of the views AUDIT_UNIFIED_POLICIES and AUDIT_UNIFIED_ENABLED_POLICIES                                                                   |
 | [saua_teact.sql](saua_teact.sql)                     | Show top unified audit events by action for current DBID                                             |
 | [saua_tecli.sql](saua_tecli.sql)                     | Show top unified audit events by client_program_name for current DBID                                |
 | [saua_tedbid.sql](saua_tedbid.sql)                   | Show top unified audit events by DBID                                                                |
