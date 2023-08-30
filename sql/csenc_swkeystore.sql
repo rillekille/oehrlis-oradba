@@ -45,7 +45,7 @@ COLUMN con_id           FORMAT 99999
 SPOOL csenc_swkeystore.log
 
 -- create the wallet folder
-host mkdir -p &wallet_root/tde
+host mkdir -p &wallet_root
 host mkdir -p &wallet_root/tde_seps
 
 -- store wallet password
@@ -58,24 +58,21 @@ PROMPT == Configure the software keystore ======================================
 -- config TDE_CONFIGURATION
 ALTER SYSTEM SET TDE_CONFIGURATION='KEYSTORE_CONFIGURATION=FILE' scope=both;
 
--- create software keystore
-ADMINISTER KEY MANAGEMENT CREATE KEYSTORE '&wallet_root/tde' IDENTIFIED BY "&wallet_pwd";
-          
+-- create software keystore in WALLET_ROOT
+ADMINISTER KEY MANAGEMENT CREATE KEYSTORE IDENTIFIED BY "&wallet_pwd";
+
+-- create an external keystore password store in WALLET_ROOT
 ADMINISTER KEY MANAGEMENT ADD SECRET '&wallet_pwd' FOR CLIENT 'TDE_WALLET' TO LOCAL AUTO_LOGIN KEYSTORE '&wallet_root/tde_seps';
          
--- open the wallet
+-- open the software keystore
 ADMINISTER KEY MANAGEMENT SET KEYSTORE OPEN FORCE KEYSTORE IDENTIFIED BY EXTERNAL STORE;
 
--- create autologin
+-- create local auto-login software keystore from the existing software keystore
 ADMINISTER KEY MANAGEMENT CREATE LOCAL AUTO_LOGIN KEYSTORE FROM KEYSTORE '&wallet_root/tde' IDENTIFIED BY "&wallet_pwd";
 
 -- list wallet information
 PROMPT == Encryption wallet information from v$encryption_wallet ===============
 SELECT * FROM v$encryption_wallet;
-
-PROMPT ====================================================================================
-PROMPT == It is recommended to restart CDB/PDB to check if keystore is being used properly.
-PROMPT ====================================================================================
 
 SPOOL OFF
 -- EOF -------------------------------------------------------------------------
