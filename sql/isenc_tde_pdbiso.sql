@@ -13,7 +13,6 @@
 --
 --              The following steps are performed:
 --              - csenc_swkeystore.sql  create and configure software keystore
---              - restart pdb
 --              - csenc_master.sql      create master encryption key
 --              - restart pdb
 --              - ssenc_info.sql        show current TDE configuration
@@ -24,20 +23,21 @@
 --------------------------------------------------------------------------------
 SET FEEDBACK OFF
 SET VERIFY OFF
--- define default values
-COLUMN def_wallet_pwd   NEW_VALUE def_wallet_pwd    NOPRINT
+-- define default values for wallet password
+COLUMN def_wallet_pwd           NEW_VALUE def_wallet_pwd        NOPRINT
 -- generate random password
 SELECT dbms_random.string('X', 20) def_wallet_pwd FROM dual;
 
--- assign default value for parameter if argument 1 or 2 is empty
+-- assign default value for parameter if argument 1 is empty
 COLUMN 1 NEW_VALUE 1 NOPRINT
 SELECT '' "1" FROM dual WHERE ROWNUM = 0;
 DEFINE wallet_pwd           = &1 &def_wallet_pwd
-COLUMN wallet_pwd   NEW_VALUE wallet_pwd NOPRINT
+COLUMN wallet_pwd           NEW_VALUE wallet_pwd NOPRINT
 
 -- format SQLPlus output and behavior
-SET LINESIZE 160 PAGESIZE 200
+SET LINESIZE 180 PAGESIZE 66
 SET HEADING ON
+SET VERIFY ON
 SET FEEDBACK ON
 
 -- start to spool
@@ -45,10 +45,6 @@ SPOOL isenc_tde_pdbiso.log
 
 -- configure software keystore for database / cdb
 @csenc_swkeystore.sql &wallet_pwd
-
-PROMPT == Restart database to load software keystore ===========================
-ALTER PLUGGABLE DATABASE CLOSE;
-ALTER PLUGGABLE DATABASE OPEN;
 
 -- uncomment the following line if you have issues with pre-created master
 -- encryption keys. e.g., because TDE wallets have been recreated
@@ -58,8 +54,7 @@ ALTER PLUGGABLE DATABASE OPEN;
 @csenc_master.sql
 
 PROMPT == Restart database to load software keystore with new master key =======
-ALTER PLUGGABLE DATABASE CLOSE;
-ALTER PLUGGABLE DATABASE OPEN;
+STARTUP FORCE;
 
 -- display information
 @ssenc_info.sql
