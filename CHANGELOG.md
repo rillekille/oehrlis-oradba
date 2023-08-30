@@ -16,6 +16,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [1.2.0] - 2023-08-30
+
+### Added
+
+- add delete TDE script *dsenc_tde.sql*
+- add a force TDE setup script *isenc_tde_force.sql* which explicitly discard
+  lost master key handles.
+- add a force TDE setup script *isenc_tde_pdbiso_force.sql* which explicitly
+  discard lost master key handles.
+- add a force TDE setup script *isenc_tde_pdbuni_force.sql* which explicitly
+  discard lost master key handles.
+
+### Changed
+
+- remove prompt *csenc_master.sql*
+- simplify commands and remove one db *startup force* in *csenc_swkeystore.sql*
+- simplify commands and remove one db *startup force* in *isenc_tde.sql*
+- simplify commands and remove one db *startup force* in *isenc_tde_pdbiso.sql*
+- move legacy scripts back to *sql* folder
 
 ## [1.1.1] - 2023-08-30
 
