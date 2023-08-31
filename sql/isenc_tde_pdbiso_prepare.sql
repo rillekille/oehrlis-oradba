@@ -9,17 +9,30 @@
 --  Purpose...: Prepare TDE in a PDB in isolation mode i.e., with a dedicated
 --              wallet in WALLET_ROOT for this pdb. Whereby this just prepare
 --              the steps as SYSDBA. The software keystore itself will be
---              created by SYSKM
+--              created by SYSKM or PDBADMIN
 --
 --              The following steps are performed:
 --              - set init.ora parameter
 --              - create directory
+--              - grant privileges
 --              - ssenc_info.sql        show current TDE configuration
 --  Notes.....:  
 --  Reference.: Requires SYS, SYSDBA or SYSKM privilege
 --  License...: Apache License Version 2.0, January 2004 as shown
 --              at http://www.apache.org/licenses/
 --------------------------------------------------------------------------------
+-- define default values
+DEFINE def_keyadmin   = 'pdbadmin'
+
+-- assign default value for parameter if argument 1 is empty
+SET FEEDBACK OFF
+SET VERIFY OFF
+COLUMN 1 NEW_VALUE 1 NOPRINT
+SELECT '' "1" FROM dual WHERE ROWNUM = 0;
+COLUMN def_keyadmin NEW_VALUE def_keyadmin NOPRINT
+DEFINE keyadmin                 = &1 &def_keyadmin
+
+
 SET FEEDBACK OFF
 SET VERIFY OFF
 -- define default values
@@ -46,13 +59,20 @@ SPOOL isenc_tde_pdbiso_prepare.log
 host mkdir -p &wallet_root
 host mkdir -p &wallet_root/tde_seps
 
-PROMPT == Configure the init.ora parameter ======================================
+PROMPT == Configure the init.ora parameter =====================================
 -- config TDE_CONFIGURATION
 ALTER SYSTEM SET TDE_CONFIGURATION='KEYSTORE_CONFIGURATION=FILE' scope=both;
 
--- extend privileges for SYSKM
-GRANT SELECT ON v_$pdbs TO syskm;
-GRANT SELECT ON v_$parameter TO syskm;
+PROMPT == Grant privileges to &keyadmin ========================================
+-- extend privileges for SYSKM and PDBADMIN
+GRANT SELECT ON v_$pdbs TO syskm CONTAINER=CURRENT;
+GRANT SELECT ON v_$parameter TO syskm CONTAINER=CURRENT;
+GRANT SELECT ON v_$pdbs TO &keyadmin CONTAINER=CURRENT;
+GRANT SELECT ON v_$parameter TO &keyadmin CONTAINER=CURRENT;
+GRANT SELECT ON v_$wallet TO &keyadmin CONTAINER=CURRENT;
+GRANT SELECT ON v_$encryption_wallet TO &keyadmin CONTAINER=CURRENT;
+GRANT SELECT ON v_$encryption_keys TO &keyadmin CONTAINER=CURRENT;
+GRANT ADMINISTER KEY MANAGEMENT TO &keyadmin CONTAINER=CURRENT;
 
 -- display information
 @ssenc_info.sql
