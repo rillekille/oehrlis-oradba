@@ -16,6 +16,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [1.4.0] - 2023-12-11
+
+### Added
+- add script *csenc_swkeystore_backup.sql* to create a TDE software keystore backup using *DBMS_SCHEDULER*
+- add script *ssenc_swkeystore_backup.sql* to show TDE software keystore backup schedules created with *csenc_swkeystore_backup.sql*
+- add script *dsenc_swkeystore_backup.sql* to delete TDE software keystore backup schedules created with *csenc_swkeystore_backup.sql*
+
+### Changed
+
+- rename file *isenc_tde_pdbiso_syskm.sql* to *isenc_tde_pdbiso_keyadmin.sql*
+- add add grant privileges for key management to *isenc_tde_pdbiso_prepare.sql*
+
 ## [1.3.0] - 2023-08-30
 
 ### Added
