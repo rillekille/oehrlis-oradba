@@ -20,8 +20,9 @@ ALTER SESSION SET nls_timestamp_format='DD.MM.YYYY HH24:MI:SS';
 COLUMN dbid                 FORMAT A60 WRAP HEADING "DB ID"
 COLUMN events               FORMAT 9,999,999,999 heading "Audit Events"
 
+SPOOL saua_tedbid.log
 SELECT
-    nvl(dbid, 'n/a') dbid,
+    nvl(to_char(dbid), 'n/a') dbid,
     COUNT(*)                events
 FROM
     unified_audit_trail
@@ -31,4 +32,5 @@ GROUP BY
     dbid
 ORDER BY
     events DESC;
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

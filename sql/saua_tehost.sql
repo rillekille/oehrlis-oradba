@@ -20,6 +20,7 @@ ALTER SESSION SET nls_timestamp_format='DD.MM.YYYY HH24:MI:SS';
 COLUMN userhost         FORMAT A60 WRAP HEADING "User Host"
 COLUMN events           FORMAT 9,999,999,999 heading "Audit Events"
 
+SPOOL saua_tehost.log
 SELECT
     nvl(userhost, 'n/a') userhost,
     COUNT(*)                events
@@ -31,4 +32,5 @@ GROUP BY
     userhost
 ORDER BY
     events DESC;
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

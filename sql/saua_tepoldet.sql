@@ -19,10 +19,12 @@ SET SQLCASE mixed
 ALTER SESSION SET nls_date_format='DD.MM.YYYY HH24:MI:SS';
 ALTER SESSION SET nls_timestamp_format='DD.MM.YYYY HH24:MI:SS';
 COLUMN unified_audit_policies   FORMAT A60 WRAP HEADING "Policies"
+COLUMN dbusername               FORMAT A25 WRAP HEADING "Policies"
 COLUMN events                   FORMAT 9,999,999,999 heading "Audit Events"
 
+SPOOL saua_tepoldet.log
 SELECT
-    nvl(action_name, 'n/a') unified_audit_policies,
+    nvl(unified_audit_policies, 'n/a') unified_audit_policies,
     nvl(dbusername, 'n/a') dbusername,
     nvl(action_name, 'n/a') action_name,
     COUNT(*)                events
@@ -36,4 +38,5 @@ GROUP BY
     action_name
 ORDER BY
     events DESC;
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

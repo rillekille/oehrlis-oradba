@@ -26,6 +26,7 @@ COLUMN bytes            FORMAT 9,999,999,999 heading "Bytes"
 COLUMN blocks           FORMAT 9,999,999,999 heading "Blocks"
 COLUMN extents          FORMAT 9,999,999,999 heading "extents"
 
+SPOOL saua_tabsize.log
 SELECT
     owner,
     segment_name,
@@ -41,4 +42,5 @@ WHERE
     owner = 'AUDSYS'
 ORDER BY
     segment_name;
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

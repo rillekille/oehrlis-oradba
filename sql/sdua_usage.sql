@@ -19,6 +19,8 @@ ALTER SESSION SET nls_date_format='DD.MM.YYYY HH24:MI:SS';
 ALTER SESSION SET nls_timestamp_format='DD.MM.YYYY HH24:MI:SS';
 COLUMN name             format a80 wrap heading "Name"
 COLUMN value            format a40 wrap heading "Value"
+
+SPOOL sdua_usage.log
 SELECT
     name,
     value
@@ -213,4 +215,6 @@ FROM
         WHERE
             owner = 'AUDSYS'
     );
+
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

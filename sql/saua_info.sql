@@ -12,6 +12,7 @@
 --  License...: Apache License Version 2.0, January 2004 as shown
 --              at http://www.apache.org/licenses/
 --------------------------------------------------------------------------------
+SET LINESIZE 200
 SET PAGESIZE 66  HEADING ON  VERIFY OFF
 SET FEEDBACK OFF  SQLCASE UPPER  NEWPAGE 1
 ALTER SESSION SET nls_date_format='DD.MM.YYYY HH24:MI:SS';

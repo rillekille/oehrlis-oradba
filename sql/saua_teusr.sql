@@ -20,6 +20,7 @@ ALTER SESSION SET nls_timestamp_format='DD.MM.YYYY HH24:MI:SS';
 COLUMN dbusername           FORMAT A60 WRAP HEADING "DB User"
 COLUMN events               FORMAT 9,999,999,999 heading "Audit Events"
 
+SPOOL saua_teusr.log
 SELECT
     nvl(dbusername, 'n/a') dbusername,
     COUNT(*)                events
@@ -31,4 +32,5 @@ GROUP BY
     dbusername
 ORDER BY
     events DESC;
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

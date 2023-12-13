@@ -20,6 +20,7 @@ ALTER SESSION SET nls_timestamp_format='DD.MM.YYYY HH24:MI:SS';
 COLUMN object_schema        FORMAT A60 WRAP HEADING "Schema"
 COLUMN events               FORMAT 9,999,999,999 heading "Audit Events"
 
+SPOOL saua_teown.log
 SELECT
     nvl(object_schema, 'n/a') object_schema,
     COUNT(*)                events
@@ -31,4 +32,5 @@ GROUP BY
     object_schema
 ORDER BY
     events DESC;
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

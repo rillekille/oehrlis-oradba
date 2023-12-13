@@ -32,7 +32,7 @@ COLUMN condition_eval_opt   FORMAT A7 WRAP HEADING "Eval"
 COLUMN audit_only_toplevel  FORMAT A3 WRAP HEADING "TOP"
 COLUMN success              FORMAT A3 WRAP HEADING "FAL"
 COLUMN failure              FORMAT A3 WRAP HEADING "SUC"
-
+SPOOL saua_pol.log
 SELECT
     nvl(u.policy_name, a.policy_name)                 AS policy_name,
     decode(a.policy_name, u.policy_name, 'YES', 'NO') AS active,
@@ -69,4 +69,6 @@ ORDER BY
     active,
     a.enabled_option,
     a.entity_name;
+
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

@@ -20,6 +20,7 @@ ALTER SESSION SET nls_timestamp_format='DD.MM.YYYY HH24:MI:SS';
 COLUMN client_program_name  FORMAT A60 WRAP HEADING "Client Program Name"
 COLUMN events               FORMAT 9,999,999,999 heading "Audit Events"
 
+SPOOL saua_tecli.log
 SELECT
     nvl(client_program_name, 'n/a') client_program_name,
     COUNT(*)                events
@@ -31,4 +32,5 @@ GROUP BY
     client_program_name
 ORDER BY
     events DESC;
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

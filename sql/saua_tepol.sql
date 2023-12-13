@@ -20,6 +20,7 @@ ALTER SESSION SET nls_timestamp_format='DD.MM.YYYY HH24:MI:SS';
 COLUMN unified_audit_policies   FORMAT A60 WRAP HEADING "Audit Policy"
 COLUMN events                   FORMAT 9,999,999,999 heading "Audit Events"
 
+SPOOL saua_tepol.log
 SELECT
     nvl(unified_audit_policies, 'n/a') unified_audit_policies,
     COUNT(*)                events
@@ -31,4 +32,5 @@ GROUP BY
     unified_audit_policies
 ORDER BY
     events DESC;
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------

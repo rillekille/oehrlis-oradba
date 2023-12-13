@@ -20,6 +20,7 @@ ALTER SESSION SET nls_timestamp_format='DD.MM.YYYY HH24:MI:SS';
 COLUMN action_name      FORMAT A30 WRAP HEADING "Actions"
 COLUMN events           FORMAT 9,999,999,999 heading "Audit Events"
 
+SPOOL saua_teact.log
 SELECT
     nvl(action_name, 'n/a') action_name,
     COUNT(*)                events
@@ -31,4 +32,5 @@ GROUP BY
     action_name
 ORDER BY
     events DESC;
+SPOOL OFF
 -- EOF -------------------------------------------------------------------------
