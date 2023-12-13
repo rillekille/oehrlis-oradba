@@ -16,6 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [1.5.1] - 2023-12-13
+
+### Added
+
+- Add a script [saua_report.sql](https://github.com/oehrlis/oradba/blob/master/sql/saua_report.sql) to run all show / report queries for unified audit in one script. Depending on the amount of audit data, this script can run for a relatively long time.
+
+### Changed
+
+- add *SPOOL* to all show script for Oracle Unified Audit
+
 ## [1.5.0] - 2023-12-13
 
 ### Added
