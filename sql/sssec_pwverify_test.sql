@@ -13,19 +13,19 @@
 -- License...: Apache License Version 2.0, January 2004 as shown
 --             at http://www.apache.org/licenses/
 --------------------------------------------------------------------------------
-
+set serveroutput on
 --------------------------------------------------------------------------------
 -- create a temporary type
 CREATE OR REPLACE TYPE table_varchar AS
-    TABLE OF VARCHAR2(128)
+    TABLE OF VARCHAR2(128 char)
 /
  
 --------------------------------------------------------------------------------
 -- Anonymous PL/SQL Block to test the password function
 DECLARE
-    username VARCHAR2(100)          := 'john_doe';
-    old_password VARCHAR2(100)      := 'OldPass123';
-    test_passwords table_varchar    := table_varchar(
+    l_username VARCHAR2(128 CHAR)       := 'john_doe';
+    l_old_password VARCHAR2(128 CHAR)   := 'OldPass123';
+    t_test_passwords table_varchar      := table_varchar(
         'NewPass123!', 
         'short', 
         'NewPassword12nnewpassword123',
@@ -37,19 +37,20 @@ DECLARE
         'john_doePass');
     result BOOLEAN;
 BEGIN
-    FOR i IN 1..test_passwords.COUNT LOOP
+    <<for_loop>>
+    FOR i IN 1..t_test_passwords.COUNT LOOP
         BEGIN
-            result := oradba_verify_function(username, test_passwords(i), old_password);
+            result := oradba_verify_function(l_username, t_test_passwords(i), l_old_password);
             IF result THEN
-                DBMS_OUTPUT.PUT_LINE('Password "' || test_passwords(i) || '" is valid.');
+                sys.dbms_output.put_line('Password "' || t_test_passwords(i) || '" is valid.');
             ELSE
-                DBMS_OUTPUT.PUT_LINE('Password "' || test_passwords(i) || '" is invalid.');
+                sys.dbms_output.put_line('Password "' || t_test_passwords(i) || '" is invalid.');
             END IF;
         EXCEPTION
             WHEN OTHERS THEN
-                DBMS_OUTPUT.PUT_LINE('Error with password "' || test_passwords(i) || '": ' || SQLERRM);
+                sys.dbms_output.put_line('Error with password "' || t_test_passwords(i) || '": ' || sqlerrm );
         END;
-    END LOOP;
+    END LOOP for_loop;
 END;
 /
 
