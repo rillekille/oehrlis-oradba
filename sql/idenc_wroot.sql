@@ -4,12 +4,13 @@
 --  Name......: idenc_wroot.sql
 --  Author....: Stefan Oehrli (oes) stefan.oehrli@oradba.ch
 --  Editor....: Stefan Oehrli
---  Date......: 2023.08.29
---  Revision..:  
---  Purpose...: Initialize init.ora parameter WALLET_ROOT for TDE with software
---              keystore. This script should run in CDB$ROOT. A manual restart
+--  Date......: 2023.12.19
+--  Revision..:
+--  Purpose...: Initialize init.ora parameter WALLET_ROOT based on value of
+--              AUDIT_FILE_DEST to setup TDE with software keystore. This
+--              script should run in CDB$ROOT. A manual restart
 --              of the database is mandatory to activate WALLET_ROOT
---  Notes.....:  
+--  Notes.....:
 --  Reference.: Requires SYS, SYSDBA or DBA privilege
 --  License...: Apache License Version 2.0, January 2004 as shown
 --              at http://www.apache.org/licenses/
@@ -45,6 +46,7 @@ SPOOL idenc_wroot.log
 -- create the wallet root folders
 HOST mkdir -p &admin_path/wallet
 host mkdir -p &admin_path/wallet/tde
+host mkdir -p &admin_path/wallet/backups
 host mkdir -p &admin_path/wallet/tde_seps
 
 -- list init.ora parameter for TDE information in SPFile
