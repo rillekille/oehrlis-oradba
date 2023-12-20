@@ -59,53 +59,72 @@ SPOOL csenc_swkeystore_backup.log
 --   4. Outputs information about the creation of the scheduler objects and reminds
 --      to create the necessary backup directory.
 --------------------------------------------------------------------------------
+DECLARE
+    l_exists  INTEGER;
+
+    
 BEGIN
--- create program TDE_Backup_Keystore to backup the TDE software keystore
-    sys.dbms_scheduler.create_program (
-        program_name   => 'TDE_Backup_Keystore',
-        program_type   => 'PLSQL_BLOCK',
-        program_action => q'(
-            DECLARE
-                v_tag         VARCHAR2(30)  := 'BackupJob';
-                v_backup_dir  VARCHAR2(30)  := '&backup_dir';
-                v_backup_path VARCHAR2(128) := '&backup_path';
-            BEGIN
-                IF upper(v_backup_path) = 'WALLET_ROOT' THEN
-                SELECT value INTO v_backup_path
-                FROM v$parameter
-                WHERE name = 'wallet_root';
-                
-                v_backup_path := v_backup_path
-                                || '/'
-                                || v_backup_dir;
-                END IF;
-                EXECUTE IMMEDIATE 'ADMINISTER KEY MANAGEMENT 
-                    BACKUP KEYSTORE USING "'
-                                    || v_tag
-                                    || '" FORCE KEYSTORE
-                    IDENTIFIED BY EXTERNAL STORE TO '''
-                                    || v_backup_path
-                                    || ''' ';
-                END;
-            )',
-            enabled   => TRUE,
-            comments  => 'Program to create a TDE Keystore backup using PL/SQL block.'); 
 
--- create schedule TDE_Backup_Schedule to backup the TDE software keystore
-    sys.dbms_scheduler.create_schedule (
-        schedule_name   => 'TDE_Backup_Schedule',
-        start_date      => SYSTIMESTAMP,
-        repeat_interval => 'freq=weekly; byday=fri; byhour=12; byminute=0; bysecond=0;',
-        end_date        => NULL,
-        comments        => 'TDE schedule, repeats weekly on Friday at 12:00 for ever.');
+    -- Check if the program exists
+    SELECT CASE WHEN EXISTS (SELECT 1 FROM user_scheduler_programs WHERE program_name = 'TDE_Backup_Keystore') THEN 1 ELSE 0 END INTO l_exists FROM dual;
+    IF l_exists = 0 THEN
+    -- Create program TDE_Backup_Keystore if it doesn't exist
+        sys.dbms_scheduler.create_program (
+            program_name   => 'TDE_Backup_Keystore',
+            program_type   => 'PLSQL_BLOCK',
+            program_action => q'(
+                DECLARE
+                    v_tag         VARCHAR2(30)  := 'BackupJob';
+                    v_backup_dir  VARCHAR2(30)  := '&backup_dir';
+                    v_backup_path VARCHAR2(128) := '&backup_path';
+                BEGIN
+                    IF upper(v_backup_path) = 'WALLET_ROOT' THEN
+                    SELECT value INTO v_backup_path
+                    FROM v$parameter
+                    WHERE name = 'wallet_root';
+                    
+                    v_backup_path := v_backup_path
+                                    || '/'
+                                    || v_backup_dir;
+                    END IF;
+                    EXECUTE IMMEDIATE 'ADMINISTER KEY MANAGEMENT 
+                        BACKUP KEYSTORE USING "'
+                                        || v_tag
+                                        || '" FORCE KEYSTORE
+                        IDENTIFIED BY EXTERNAL STORE TO '''
+                                        || v_backup_path
+                                        || ''' ';
+                    END;
+                )',
+                enabled   => TRUE,
+                comments  => 'Program to create a TDE Keystore backup using PL/SQL block.'); 
+    END IF;
 
--- create job TDE_Backup_Job to backup the TDE software keystore
-    sys.dbms_scheduler.create_job (
-        job_name      => 'TDE_Backup_Job',
-        program_name  => 'TDE_Backup_Keystore',
-        schedule_name => 'TDE_Backup_Schedule',
-        enabled       => TRUE,
-        comments      => 'TDE backup job using program TDE_BACKUP_KEYSTORE and schedule TDE_BACKUP_SCHEDULE.');
+    -- Check if the schedule exists
+    SELECT CASE WHEN EXISTS (SELECT 1 FROM user_scheduler_schedules WHERE schedule_name = 'TDE_Backup_Schedule') THEN 1 ELSE 0 END INTO l_exists FROM dual;
+    IF l_exists = 0 THEN
+    -- Create schedule TDE_Backup_Schedule if it doesn't exist
+        sys.dbms_scheduler.create_schedule (
+            schedule_name   => 'TDE_Backup_Schedule',
+            start_date      => SYSTIMESTAMP,
+            repeat_interval => 'freq=weekly; byday=fri; byhour=12; byminute=0; bysecond=0;',
+            end_date        => NULL,
+            comments        => 'TDE schedule, repeats weekly on Friday at 12:00 for ever.');
+    END IF;
+
+    -- Check if the job exists
+    --SELECT COUNT(*) INTO l_job_exists FROM user_scheduler_jobs WHERE job_name = 'TDE_Backup_Job';
+    SELECT CASE WHEN EXISTS (SELECT 1 FROM user_scheduler_jobs WHERE job_name = 'TDE_Backup_Job') THEN 1 ELSE 0 END INTO l_exists FROM dual;
+    IF l_exists = 0 THEN
+    --IF l_job_exists = 0 THEN
+    -- Create job TDE_Backup_Job if it doesn't exist
+        sys.dbms_scheduler.create_job (
+            job_name      => 'TDE_Backup_Job',
+            program_name  => 'TDE_Backup_Keystore',
+            schedule_name => 'TDE_Backup_Schedule',
+            enabled       => TRUE,
+            comments      => 'TDE backup job using program TDE_BACKUP_KEYSTORE and schedule TDE_BACKUP_SCHEDULE.');
+    END IF;
 
     sys.dbms_output.put_line('INFO : Scheduler Job for TDE software Keystore Backup created.');
     sys.dbms_output.put_line('INFO : Dont forget to create directory &backup_path/&backup_dir');
