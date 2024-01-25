@@ -5,13 +5,34 @@
 --  Author....: Stefan Oehrli (oes) stefan.oehrli@accenture.com
 --  Editor....: Stefan Oehrli
 --  Date......: 2023.12.19
---  Usage.....: 
---  Purpose...: Configure TDE
---  Notes.....: 
+--  Usage.....: SQL*Plus script to configure Transparent Data Encryption (TDE) settings 
+--              and create TDE administration user and role in Oracle 19c and newer.
+--  Purpose...: Automates the setup of TDE in Oracle databases, including the creation
+--              of necessary roles and users, setting TDE-specific initialization parameters,
+--              and granting necessary privileges.
+--  Notes.....: Ensure that Oracle Wallet or Keystore is properly configured before running
+--              this script. The script should be executed by a user with SYSDBA privileges.
 --  Reference.: 
 --  License...: Apache License Version 2.0, January 2004 as shown
 --              at http://www.apache.org/licenses/
 --------------------------------------------------------------------------------
+-- define default values
+DEFINE _def_tde_admin_role   = 'TDE_ADMIN'
+DEFINE _def_tde_admin_user   = 'SEC_ADMIN'
+
+-- assign default value for parameter if argument 1 and 2 if one is empty
+SET FEEDBACK OFF
+SET VERIFY OFF
+-- Assign default value for parameter 1 _def_tde_admin_role
+COLUMN 1 NEW_VALUE 1 NOPRINT
+SELECT NULL "1" FROM dual WHERE ROWNUM = 0;
+DEFINE tde_admin_role     = &1 &_def_tde_admin_role
+
+-- Assign default value for parameter 1 _def_tde_admin_user
+COLUMN 2 NEW_VALUE 2 NOPRINT
+SELECT NULL "2" FROM dual WHERE ROWNUM = 0;
+DEFINE tde_admin_user     = &2 &_def_tde_admin_user
+
 SET SERVEROUTPUT ON
 SET LINESIZE 160 PAGESIZE 200
 COL policy_name FOR A40
@@ -22,6 +43,13 @@ SPOOL idenc_tde.log
 
 --------------------------------------------------------------------------------
 -- Anonymous PL/SQL Block to configure TDE parameter and admin user
+-- This block performs the following actions:
+--   1. Determines if the database is a Container Database (CDB) and sets relevant variables.
+--   2. Sets TDE-specific initialization parameters using ALTER SYSTEM.
+--   3. Creates a TDE admin role with required system and object privileges.
+--   4. Creates a TDE admin user and grants necessary roles and privileges.
+--   5. Handles exceptions and outputs relevant information and error messages.
+--------------------------------------------------------------------------------
 DECLARE
 
     -- Types
@@ -31,9 +59,6 @@ DECLARE
 --------------------------------------------------------------------------------
 -- Begin of Customization ------------------------------------------------------
 --------------------------------------------------------------------------------
-    l_tde_admin_user        dbms_id :='SEC_ADMIN';  -- TDE admin username
-    l_tda_admin_role        dbms_id :='TDE_ADMIN';  -- TDE admin role
-
     -- table with system privieges granted to TDE admin
     t_system_privileges t_table_varchar_type := t_table_varchar_type(
         'CREATE SESSION',
@@ -62,6 +87,9 @@ DECLARE
 --------------------------------------------------------------------------------
 
     -- Local variables
+    l_tda_admin_role        dbms_id :='&tde_admin_role';  -- TDE admin role
+    l_tde_admin_user        dbms_id :='&tde_admin_user';  -- TDE admin username
+
     l_cdb                   v$database.cdb%type;    -- variable to check the status of the CDB architecture
     l_common_user_prefix    v$parameter.value%type; -- common_user_prefix
     l_container_stm         text_type;              -- container statement create statements IMMEDIATE
@@ -74,6 +102,8 @@ DECLARE
     PRAGMA EXCEPTION_INIT(e_insufficient_privileges, -1031); -- ORA-01031: insufficient privileges
     
 BEGIN
+    l_tde_admin_user := upper(l_tde_admin_user);
+    l_tda_admin_role := upper(l_tda_admin_role);
     -- retrive Information from v$database
     <<get_db_arch>>
     BEGIN
@@ -172,17 +202,21 @@ BEGIN
             EXECUTE IMMEDIATE l_sql; 
         END IF;
     END create_tde_admin_user;
-    
-    -- alter the user
-    l_sql := 'ALTER USER ' || sys.dbms_assert.enquote_name(l_tde_admin_user) || ' SET CONTAINER_DATA=ALL CONTAINER=CURRENT';
-    EXECUTE IMMEDIATE l_sql; 
-    sys.dbms_output.put_line('Info : Grant role privileges to admin iser '||l_tde_admin_user);
+
+    -- alter the user if we do have a CDB
+    IF l_cdb = 'YES' THEN
+        l_sql := 'ALTER USER ' || sys.dbms_assert.enquote_name(l_tde_admin_user) || ' SET CONTAINER_DATA=ALL CONTAINER=CURRENT';
+--        sys.dbms_output.put_line('Info : '||l_sql);
+        EXECUTE IMMEDIATE l_sql;
+    END IF;
+    sys.dbms_output.put_line('Info : Grant role privileges to admin user '||l_tde_admin_user);
+
     -- grant roles to tde admin user
-    l_sql := 'ALTER USER ' || sys.dbms_assert.enquote_name(l_tde_admin_user) || ' SET CONTAINER_DATA=ALL CONTAINER=CURRENT';
-    EXECUTE IMMEDIATE l_sql; 
     l_sql := 'GRANT ' || sys.dbms_assert.enquote_name(l_tda_admin_role) || ' TO '|| sys.dbms_assert.enquote_name(l_tde_admin_user) || ' '|| l_container_stm;
+--    sys.dbms_output.put_line('Info : '||l_sql);
     EXECUTE IMMEDIATE l_sql;
     l_sql := 'GRANT syskm TO '|| sys.dbms_assert.enquote_name(l_tde_admin_user) || ' '|| l_container_stm;
+--    sys.dbms_output.put_line('Info : '||l_sql);
     EXECUTE IMMEDIATE l_sql;
 END;
 /

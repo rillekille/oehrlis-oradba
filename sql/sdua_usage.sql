@@ -146,7 +146,7 @@ FROM
         SELECT
             10                  AS id,
             'Tablespace in use' AS name,
-            LISTAGG(tablespace_name, ', ') WITHIN GROUP(
+            LISTAGG(DISTINCT tablespace_name, ', ') WITHIN GROUP(
             ORDER BY
                 tablespace_name
             )                   AS value

@@ -42,7 +42,7 @@ DEFINE os_user              = &4 &_os_user
 DEFINE host                 = &5 &_host
 DEFINE client_program_name  = &6 &_client_program_name
 
-@aue_sessions.sql &days &dbuser &audit_type &os_user &host &client_program_name
+@saua_as.sql &days &dbuser &audit_type &os_user &host &client_program_name
 
 UNDEFINE _days,_dbuser _audit_type _os_user _host _client_program_name
 UNDEFINE days dbuser audit_type os_user host client_program_name

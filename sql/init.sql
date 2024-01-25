@@ -14,8 +14,8 @@
 
 -- set SQLPATH variable to either Unix or Windows format
 
--- def SQLPATH=$SQLPATH -- (Unix)
-def SQLPATH=%SQLPATH%
+def SQLPATH=$SQLPATH -- (Unix)
+-- def SQLPATH=%SQLPATH%
 
 def _TPTTEMP=&SQLPATH/tmp
 

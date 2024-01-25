@@ -43,7 +43,7 @@ DEFINE host                 = &5 &_host
 DEFINE client_program_name  = &6 &_client_program_name
 
 SET PAGESIZE 66  HEADING ON  VERIFY OFF
-SET LINESIZE 180
+SET LINESIZE 200
 SET FEEDBACK OFF  SQLCASE UPPER  NEWPAGE 1
 SET SQLCASE mixed
 ALTER SESSION SET nls_date_format='DD.MM.YYYY HH24:MI:SS';
@@ -55,9 +55,9 @@ COLUMN sessionid            FORMAT 9999999999 heading "Session ID"
 COLUMN proxy_sessionid      FORMAT 9999999999 heading "Proxy ID"
 COLUMN audit_type           FORMAT A20 WRAP HEADING "Audit Type"
 COLUMN os_username          FORMAT A14 WRAP HEADING "OS User"
-COLUMN userhost             FORMAT A20 WRAP HEADING "Host"
+COLUMN userhost             FORMAT A26 WRAP HEADING "Host"
 COLUMN instance_id          FORMAT 99999999 HEADING "Instance"
-COLUMN client_program_name  FORMAT A30 WRAP HEADING "Client Program"
+COLUMN client_program_name  FORMAT A50 WRAP HEADING "Client Program"
 COLUMN records              FORMAT 999,999,999 heading "Audit Records"
 
 TTITLE  'List of audit sessions for audit type &audit_type '
@@ -78,8 +78,9 @@ FROM
 WHERE
         u.dbid = con_id_to_dbid(sys_context('USERENV', 'CON_ID'))
     AND  audit_type LIKE upper('&audit_type')
-    AND ( '&days' IS NULL
-          OR event_timestamp >= sysdate - &days )
+    AND ( &days IS NULL
+          OR &days = ''
+          OR event_timestamp >= sysdate - &days)
     AND  upper(dbusername) LIKE upper('&dbuser')
     AND  upper(os_username) LIKE upper('&os_user')
     AND  upper(userhost) LIKE upper('&host')
