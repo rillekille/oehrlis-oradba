@@ -1,5 +1,6 @@
 # Changelog
 <!-- markdownlint-disable MD013 -->
+<!-- markdownlint-disable MD024 -->
 <!-- markdownlint-configure-file { "MD024":{"allow_different_nesting": true }} -->
 All notable changes to this project will be documented in this file.
 
@@ -15,6 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Removed
+
+## [1.6.0] - 2024-03-21
+
+### Added
+
+- Add script [sdenc_dbf_off_enc.sql](https://github.com/oehrlis/oradba/blob/master/sql/sdenc_dbf_off_enc.sql) to generate chunks of *alter database* commands for offline encrypt datafiles
+- Add script [sdenc_dbf_off_dec.sql](https://github.com/oehrlis/oradba/blob/master/sql/sdenc_dbf_off_dec.sql) to generate chunks of *alter database* commands for offline decrypt datafiles
 
 ## [1.5.1] - 2023-12-13
 
