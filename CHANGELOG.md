@@ -23,11 +23,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add script [sdenc_dbf_off_enc.sql](https://github.com/oehrlis/oradba/blob/master/sql/sdenc_dbf_off_enc.sql) to generate chunks of *alter database* commands for offline encrypt datafiles
 - Add script [sdenc_dbf_off_dec.sql](https://github.com/oehrlis/oradba/blob/master/sql/sdenc_dbf_off_dec.sql) to generate chunks of *alter database* commands for offline decrypt datafiles
+- Add script [saua_logon.sql](https://github.com/oehrlis/oradba/blob/master/sql/saua_logon.sql) to show audit logon events
+- Add script [senc_tde_ops.sql](https://github.com/oehrlis/oradba/blob/master/sql/senc_tde_ops.sql) to show TDE operation from *V$SESSION_LONGOPS*.
+- Add script [senc_tde_ops_run.sql](https://github.com/oehrlis/oradba/blob/master/sql/senc_tde_ops_run.sql) to show running TDE operation from *V$SESSION_LONGOPS*.
+- Add script [senc_tde_ops_csv.sql](https://github.com/oehrlis/oradba/blob/master/sql/senc_tde_ops_csv.sql) to show TDE operation from *V$SESSION_LONGOPS* as CSV
+
 
 ### Fixed
 
 - uncomment *oradba_loc_all_act_named_usr* in *iaua_pol.sql*.
-- 
+
 ## [1.5.1] - 2023-12-13
 
 ### Added
