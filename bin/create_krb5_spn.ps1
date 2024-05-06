@@ -20,7 +20,7 @@
 # ------------------------------------------------------------------------------
 # - Customization --------------------------------------------------------------
 param (
-    $ServiceName    ='db23',        # Service / Host Name as script parameter
+    $ServiceName    ='db23'         # Service / Host Name as script parameter
     )         
 
 $UserDN             = "cn=Users"    # Container for Service Name 
@@ -55,7 +55,7 @@ $ServiceUserParams = @{
     UserPrincipalName       =   "oracle/$ServiceName.$DNSRoot"
     Description             =   "Kerberos Service User for $ServiceName"
     Path                    =   $UserBaseDN
-    AccountPassword         =   credential.Password
+    AccountPassword         =   $credential.Password
     PasswordNeverExpires    =   $true
     Enabled                 =   $true
     KerberosEncryptionType  =   "AES256"
