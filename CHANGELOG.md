@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [1.7.0] - 2024-08-21
+
+### Added
+
+- Add script [spsec_usrinf.sql](https://github.com/oehrlis/oradba/blob/master/sql/spsec_usrinf.sql) to show session information of current user
+- Add alias script [whoami.sql](https://github.com/oehrlis/oradba/blob/master/sql/whoami.sql) for script [spsec_usrinf.sql](https://github.com/oehrlis/oradba/blob/master/sql/spsec_usrinf.sql)
+
 ## [1.6.0] - 2024-03-21
 
 ### Added

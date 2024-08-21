@@ -73,11 +73,12 @@ The following SQL scripts are available.
 
 | Script                                               | Alias                      | Purpose                                                                                                                                   |
 |------------------------------------------------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| [cdsec_credbarestrole.sql](cdsec_credbarestrole.sql) |                            | Script to create a restricted DBA role including re-grant to existing users.                                                              |
+| [cssec_pwverify.sql](cssec_pwverify.sql)             |                            | Create a custom password verify function. The password strength and complexity can be configured by the internal variables at create time |
 | [sdsec_sysobj.sql](sdsec_sysobj.sql)                 | [sysobj.sql](sysobj.sql)   | Show respectively create a list of granted SYS object privileges                                                                          |
 | [sdsec_syspriv.sql](sdsec_syspriv.sql)               | [syspriv.sql](syspriv.sql) | Show respectively create a list of granted system privileges                                                                              |
-| [cssec_pwverify.sql](cssec_pwverify.sql)             |                            | Create a custom password verify function. The password strength and complexity can be configured by the internal variables at create time |
+| [spsec_usrinf.sql](spsec_usrinf.sql)                 | [whoami.sql](whoami.sql)   | Script to show session information of current user.                                                                                       |
 | [sssec_pwverify_test.sql](sssec_pwverify_test.sql)   |                            | Script to verify the custom password verify function. List of passwords to be tested have to added to the script / varchar2 array         |
-| [cdsec_credbarestrole.sql](cdsec_credbarestrole.sql) |                            | Script to create a restricted DBA role including re-grant to existing users.                                                              |
 
 ### SQL Developer Reports
 
